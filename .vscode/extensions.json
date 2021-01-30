@@ -1,0 +1,7 @@
+{
+	"recommendations": [
+                "ms-python.python",
+                "kevinrose.vsc-python-indent",
+                "ms-azuretools.vscode-docker"
+	]
+}

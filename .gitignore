@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/user_data/backtest_results
+/user_data/data/binance
+/user_data/hyperopt_results
+/user_data/logs
+/user_data/plot
+/user_data/tradesv3.sqlite
+/user_data/hyperopt.lock

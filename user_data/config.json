@@ -1,0 +1,93 @@
+{
+    "max_open_trades": 15,
+    "stake_currency": "BTC",
+    "stake_amount": 0.0055,
+    "tradable_balance_ratio": 0.99,
+    "fiat_display_currency": "ZAR",
+    "timeframe": "1h",
+    "dry_run": false,
+    "dry_run_wallet": 0.08423594,
+    "cancel_open_orders_on_exit": false,
+    "unfilledtimeout": {
+        "buy": 10,
+        "sell": 30
+    },
+    "bid_strategy": {
+        "use_order_book": true,
+        "ask_last_balance": 1.0,
+        "order_book_top": 1,
+        "check_depth_of_market": {
+            "enabled": false,
+            "bids_to_ask_delta": 1
+        }
+    },
+    "ask_strategy":{
+        "use_order_book": false,
+        "order_book_min": 1,
+        "order_book_max": 9,
+        "use_sell_signal": true,
+        "sell_profit_only": false,
+        "ignore_roi_if_buy_signal": false
+    },
+    "exchange": {
+        "name": "binance",
+        "key": "...",
+        "secret": "...",
+        "ccxt_config": {"enableRateLimit": true},
+        "ccxt_async_config": {
+            "enableRateLimit": false
+        },
+        "pair_whitelist": [
+            "SAND/BTC",
+            "MANA/BTC",
+            "BQX/BTC",
+            "ALGO/BTC",
+            "IRIS/BTC",
+            "THETA/BTC",
+            "XRP/BTC",
+            "UNFI/BTC",
+            "AXS/BTC",
+            "GLM/BTC",
+            "BNB/BTC",
+            "BAT/BTC",
+            "BOT/BTC",
+            "OMG/BTC",
+            "FIL/BTC",
+            "ICX/BTC",
+            "STRAX/BTC",
+            "SXP/BTC",
+            "XMR/BTC",
+            "BRD/BTC",
+            "XEM/BTC",
+            "IOTA/BTC",
+            "FET/BTC",
+            "LTO/BTC",
+            "SYS/BTC"
+        ],
+        "pair_blacklist": [
+            "TFUEL/BTC",
+            "AKRO/BTC",
+            "ONT/BTC",
+            "ZIL/BTC",
+            "VET/BTC",
+            "TRX/BTC",
+            "MATIC/BTC"
+        ]
+    },
+    "pairlists": [
+        {
+            "method": "StaticPairList"
+        }
+    ],
+    "telegram": {
+        "enabled": true,
+        "token": "1670055927:AAHgDHWxMVablf1ujEF1dCLyRWsTk20relM",
+        "chat_id": "1551490751"
+    },
+    "bot_name": "FrostAura Plutus",
+    "initial_state": "running",
+    "forcebuy_enable": false,
+    "internals": {
+        "process_throttle_secs": 5
+    }
+}

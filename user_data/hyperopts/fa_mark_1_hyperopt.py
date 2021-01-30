@@ -8,7 +8,7 @@ from freqtrade.optimize.hyperopt_interface import IHyperOpt
 import talib.abstract as ta
 import freqtrade.vendor.qtpylib.indicators as qtpylib
 
-class SampleHyperOpt(IHyperOpt):
+class FrostAuraMark1HyperOpt(IHyperOpt):
     @staticmethod
     def populate_indicators(dataframe: DataFrame, metadata: dict) -> DataFrame:
         # RSI

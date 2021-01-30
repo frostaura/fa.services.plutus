@@ -25,13 +25,13 @@ Automated builds are set up for Docker Hub. To use this service without the sour
                     --strategy BBRSIStrategy
 #### Custom Commands
 ##### Download Historical Market Data
-docker-compose run --rm freqtrade download-data --exchange binance --days 15 -t 1h
+docker-compose run --rm freqtrade download-data --exchange binance --days 90 -t 1h
 ##### Initiate Backtesting
-docker-compose run --rm freqtrade backtesting --export trades --config user_data/config.json --strategy BBRSIStrategy --timerange 20210120-20210127 -i 1h
+docker-compose run --rm freqtrade backtesting --export trades --config user_data/config.json --strategy FrostAuraMark1Strategy --timerange 20210120-20210127 -i 1h
 ##### Create HTML Plot File for a Given Strategy's Performance
-docker-compose run --rm freqtrade plot-dataframe -s BBRSIStrategy -p LINK/BTC --indicators1 bb_lowerband,bb_middleband,bb_upperband --indicators2 rsi
+docker-compose run --rm freqtrade plot-dataframe -s FrostAuraMark1Strategy -p LINK/BTC --indicators1 bb_lowerband,bb_middleband,bb_upperband --indicators2 rsi
 ##### Initiate HyperOpt for a Given Strategy
-docker-compose run --rm freqtrade hyperopt --config user_data/config.json -e 3000 --strategy BBRSIStrategy --hyperopt SampleHyperOpt --hyperopt-loss SharpeHyperOptLossDaily
+docker-compose run --rm freqtrade hyperopt --config user_data/config.json -e 1500 --strategy FrostAuraMark1Strategy --hyperopt FrostAuraMark1HyperOpt --hyperopt-loss SharpeHyperOptLossDaily
 
 ## How To
 ### Getting Familiar

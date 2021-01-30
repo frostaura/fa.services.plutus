@@ -5,7 +5,7 @@ from freqtrade.strategy.interface import IStrategy
 import talib.abstract as ta
 import freqtrade.vendor.qtpylib.indicators as qtpylib
 
-class BBRSIStrategy(IStrategy):
+class FrostAuraMark1Strategy(IStrategy):
     """
     This is FrostAura's mark 1 strategy which aims to make purchase decisions
     based on the BB and RSI.

@@ -1,7 +1,9 @@
 version: '3'
 services:
   freqtrade:
-    image: freqtradeorg/freqtrade:stable_plot
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
     restart: unless-stopped
     container_name: freqtrade
     volumes:

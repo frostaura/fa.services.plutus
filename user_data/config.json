@@ -1,16 +1,16 @@
 {
     "max_open_trades": 15,
     "stake_currency": "BTC",
-    "stake_amount": 0.0055,
+    "stake_amount": 0.01,
     "tradable_balance_ratio": 0.99,
-    "fiat_display_currency": "ZAR",
+    "fiat_display_currency": "USD",
     "timeframe": "1h",
     "dry_run": false,
     "dry_run_wallet": 0.08423594,
     "cancel_open_orders_on_exit": false,
     "unfilledtimeout": {
-        "buy": 10,
-        "sell": 30
+        "buy": 30,
+        "sell": 50
     },
     "bid_strategy": {
         "use_order_book": true,
@@ -62,9 +62,21 @@
             "IOTA/BTC",
             "FET/BTC",
             "LTO/BTC",
-            "SYS/BTC"
-        ],
-        "pair_blacklist": [
+            "SYS/BTC",
+            "GRT/BTC",
+            "DNT/BTC",
+            "SUSHI/BTC",
+            "BCH/BTC",
+            "EOS/BTC",
+            "ATOM/BTC",
+            "AAVE/BTC",
+            "COTI/BTC",
+            "LTC/BTC",
+            "SOL/BTC",
+            "XTZ/BTC",
+            "SRM/BTC",
+            "HBAR/BTC",
+            "ROSE/BTC",
             "TFUEL/BTC",
             "AKRO/BTC",
             "ONT/BTC",
@@ -72,6 +84,8 @@
             "VET/BTC",
             "TRX/BTC",
             "MATIC/BTC"
+        ],
+        "pair_blacklist": [
         ]
     },
     "pairlists": [

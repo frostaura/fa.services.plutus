@@ -10,7 +10,10 @@ class FrostAuraMark1Strategy(IStrategy):
     This is FrostAura's mark 1 strategy which aims to make purchase decisions
     based on the BB and RSI.
     
-    Last Sharpe Ratio: 3.4549
+    Last Optimization:
+        Sharpe Ratio    : 3.4549
+        Profit %        : 471.56%
+        Optimized for   : Last 90 days, 1h
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.

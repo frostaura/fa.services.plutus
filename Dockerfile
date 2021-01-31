@@ -9,10 +9,7 @@ COPY ./user_data/hyperopts /freqtrade/user_data/hyperopts
 # Download the latest market information for the last 90 days in 1h resolutions.
 RUN freqtrade download-data --exchange binance --days 90 -t 1h
 
-# Run a backtest to get the baseline strategy performance.
-RUN freqtrade backtesting --export trades --config user_data/config.json --strategy FrostAuraMark1Strategy -i 1h
-
-# Run ML optimization(s) for a short 250 epocs.
+# Run ML optimization(s) for X epocs / iterations.
 RUN freqtrade hyperopt --config user_data/config.json -e 250 --strategy FrostAuraMark1Strategy --hyperopt FrostAuraMark1HyperOpt --hyperopt-loss SharpeHyperOptLossDaily
 
 # Substitute in optimized parameters.
@@ -21,5 +18,6 @@ RUN freqtrade hyperopt --config user_data/config.json -e 250 --strategy FrostAur
 RUN freqtrade backtesting --export trades --config user_data/config.json --strategy FrostAuraMark1Strategy -i 1h
 
 # Report
-## on the optimized results.
-## on poor performance.
+## Publish sharpe ratio.
+### Publish result as device attributes to FrostAura Devices.
+## Fail build with sharpe ratio < 3.5.

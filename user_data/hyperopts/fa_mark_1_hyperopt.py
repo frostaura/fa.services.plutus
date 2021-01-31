@@ -54,6 +54,7 @@ class FrostAuraMark1HyperOpt(IHyperOpt):
             Buy strategy Hyperopt will build and use.
             """
             conditions = []
+            minimum_coin_price = 0.0000015
 
             # GUARDS AND TRENDS
             if 'rsi-enabled' in params and params['rsi-enabled']:
@@ -72,6 +73,7 @@ class FrostAuraMark1HyperOpt(IHyperOpt):
 
             # Check that volume is not 0
             conditions.append(dataframe['volume'] > 0)
+            conditions.append(dataframe["close"] > minimum_coin_price)
 
             if conditions:
                 dataframe.loc[
@@ -117,9 +119,6 @@ class FrostAuraMark1HyperOpt(IHyperOpt):
                 if params['sell-trigger'] == 'sell-bb_upper1':
                     conditions.append(dataframe['close'] > dataframe['bb_upperband1'])
 
-            # Check that volume is not 0
-            conditions.append(dataframe['volume'] > 0)
-
             if conditions:
                 dataframe.loc[
                     reduce(lambda x, y: x & y, conditions),
@@ -149,8 +148,7 @@ class FrostAuraMark1HyperOpt(IHyperOpt):
             (
                 (dataframe['rsi'] > 26) &
                 (dataframe["close"] < dataframe['bb_lowerband']) &
-                (dataframe["close"] > minimum_coin_price) &
-                (dataframe['volume'] > 0)
+                (dataframe["close"] > minimum_coin_price))
             ),
             'buy'] = 1
 
@@ -160,8 +158,7 @@ class FrostAuraMark1HyperOpt(IHyperOpt):
         dataframe.loc[
             (
                 (dataframe['rsi'] > 56) &
-                (dataframe["close"] > dataframe['bb_lowerband1']) &
-                (dataframe['volume'] > 0)
+                (dataframe["close"] > dataframe['bb_lowerband1']))
             ),
             'sell'] = 1
 

@@ -104,8 +104,7 @@ class FrostAuraMark1Strategy(IStrategy):
             (
                 (dataframe['rsi'] > 26) &
                 (dataframe["close"] < dataframe['bb_lowerband3']) &
-                (dataframe["close"] > minimum_coin_price) &
-                (dataframe['volume'] > 0)
+                (dataframe["close"] > minimum_coin_price)
             ),
             'buy'] = 1
 
@@ -115,8 +114,7 @@ class FrostAuraMark1Strategy(IStrategy):
         dataframe.loc[
             (
                 (dataframe['rsi'] > 56) &
-                (dataframe["close"] > dataframe['bb_lowerband1']) &
-                (dataframe['volume'] > 0)
+                (dataframe["close"] > dataframe['bb_lowerband1'])
             ),
             'sell'] = 1
         

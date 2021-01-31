@@ -22,7 +22,7 @@ Automated builds are set up for Docker Hub. To use this service without the sour
                     --logfile /freqtrade/user_data/logs/freqtrade.log
                     --db-url sqlite:////freqtrade/user_data/tradesv3.sqlite
                     --config /freqtrade/user_data/config.json
-                    --strategy BBRSIStrategy
+                    --strategy FrostAuraMark1Strategy
 #### Custom Commands
 ##### Download Historical Market Data
 docker-compose run --rm freqtrade download-data --exchange binance --days 90 -t 1h

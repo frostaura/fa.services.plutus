@@ -46,13 +46,7 @@ class FrostAuraMark1HyperOpt(IHyperOpt):
 
     @staticmethod
     def buy_strategy_generator(params: Dict[str, Any]) -> Callable:
-        """
-        Define the buy strategy parameters to be used by Hyperopt.
-        """
         def populate_buy_trend(dataframe: DataFrame, metadata: dict) -> DataFrame:
-            """
-            Buy strategy Hyperopt will build and use.
-            """
             conditions = []
             minimum_coin_price = 0.0000015
 
@@ -71,8 +65,6 @@ class FrostAuraMark1HyperOpt(IHyperOpt):
                 if params['trigger'] == 'bb_lower4':
                     conditions.append(dataframe['close'] < dataframe['bb_lowerband4'])
 
-            # Check that volume is not 0
-            conditions.append(dataframe['volume'] > 0)
             conditions.append(dataframe["close"] > minimum_coin_price)
 
             if conditions:
@@ -86,9 +78,6 @@ class FrostAuraMark1HyperOpt(IHyperOpt):
 
     @staticmethod
     def indicator_space() -> List[Dimension]:
-        """
-        Define your Hyperopt space for searching buy strategy parameters.
-        """
         return [
             Integer(5, 50, name='rsi-value'),
             Categorical([True, False], name='rsi-enabled'),
@@ -97,13 +86,7 @@ class FrostAuraMark1HyperOpt(IHyperOpt):
 
     @staticmethod
     def sell_strategy_generator(params: Dict[str, Any]) -> Callable:
-        """
-        Define the sell strategy parameters to be used by Hyperopt.
-        """
         def populate_sell_trend(dataframe: DataFrame, metadata: dict) -> DataFrame:
-            """
-            Sell strategy Hyperopt will build and use.
-            """
             conditions = []
 
             # GUARDS AND TRENDS
@@ -130,15 +113,10 @@ class FrostAuraMark1HyperOpt(IHyperOpt):
 
     @staticmethod
     def sell_indicator_space() -> List[Dimension]:
-        """
-        Define your Hyperopt space for searching sell strategy parameters.
-        """
         return [
             Integer(30, 100, name='sell-rsi-value'),
             Categorical([True, False], name='sell-rsi-enabled'),
-            Categorical(['sell-bb_lower1',
-                         'sell-bb_middle1',
-                         'sell-bb_upper1'], name='sell-trigger')
+            Categorical(['sell-bb_lower1', 'sell-bb_middle1', 'sell-bb_upper1'], name='sell-trigger')
         ]
 
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
@@ -148,7 +126,7 @@ class FrostAuraMark1HyperOpt(IHyperOpt):
             (
                 (dataframe['rsi'] > 26) &
                 (dataframe["close"] < dataframe['bb_lowerband']) &
-                (dataframe["close"] > minimum_coin_price))
+                (dataframe["close"] > minimum_coin_price)
             ),
             'buy'] = 1
 
@@ -158,7 +136,7 @@ class FrostAuraMark1HyperOpt(IHyperOpt):
         dataframe.loc[
             (
                 (dataframe['rsi'] > 56) &
-                (dataframe["close"] > dataframe['bb_lowerband1']))
+                (dataframe["close"] > dataframe['bb_lowerband1'])
             ),
             'sell'] = 1
 

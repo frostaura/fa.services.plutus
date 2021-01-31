@@ -11,8 +11,8 @@ class FrostAuraMark1Strategy(IStrategy):
     based on the BB and RSI.
     
     Last Optimization:
-        Sharpe Ratio    : 3.96603 (prev. 1.90119 %)
-        Profit %        : 537.12% (prev. 280.26%
+        Sharpe Ratio    : 5.34636 (prev. 3.96603)
+        Profit %        : 751.51% (prev. 537.12%)
         Optimized for   : Last 90 days, 1h
     """
     # Strategy interface version - allow new iterations of the strategy interface.
@@ -21,14 +21,14 @@ class FrostAuraMark1Strategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.57504,
-        "233": 0.13582,
-        "569": 0.08302,
-        "1724": 0
+        "0": 0.18525,
+        "209": 0.12282,
+        "858": 0.08865,
+        "2276": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.49628
+    stoploss = -0.49286
 
     # Trailing stoploss
     trailing_stop = False
@@ -90,6 +90,11 @@ class FrostAuraMark1Strategy(IStrategy):
         dataframe['bb_middleband1'] = bollinger1['mid']
         dataframe['bb_upperband1'] = bollinger1['upper']
         
+        bollinger2 = qtpylib.bollinger_bands(qtpylib.typical_price(dataframe), window=20, stds=2)
+        dataframe['bb_lowerband2'] = bollinger2['lower']
+        dataframe['bb_middleband2'] = bollinger2['mid']
+        dataframe['bb_upperband2'] = bollinger2['upper']
+        
         bollinger3 = qtpylib.bollinger_bands(qtpylib.typical_price(dataframe), window=20, stds=3)
         dataframe['bb_lowerband3'] = bollinger3['lower']
         dataframe['bb_middleband3'] = bollinger3['mid']
@@ -102,8 +107,8 @@ class FrostAuraMark1Strategy(IStrategy):
         
         dataframe.loc[
             (
-                # (dataframe['rsi'] > 24) &
-                (dataframe["close"] < dataframe['bb_lowerband3']) &
+                (dataframe['rsi'] > 39) &
+                (dataframe["close"] < dataframe['bb_lowerband2']) &
                 (dataframe["close"] > minimum_coin_price)
             ),
             'buy'] = 1
@@ -113,8 +118,8 @@ class FrostAuraMark1Strategy(IStrategy):
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                (dataframe['rsi'] > 94) &
-                (dataframe["close"] > dataframe['bb_lowerband1'])
+                (dataframe['rsi'] > 80) &
+                (dataframe["close"] > dataframe['bb_upperband1'])
             ),
             'sell'] = 1
         

@@ -124,8 +124,8 @@ class FrostAuraMark1HyperOpt(IHyperOpt):
         
         dataframe.loc[
             (
-                # (dataframe['rsi'] > 24) &
-                (dataframe["close"] < dataframe['bb_lowerband3']) &
+                (dataframe['rsi'] > 39) &
+                (dataframe["close"] < dataframe['bb_lowerband2']) &
                 (dataframe["close"] > minimum_coin_price)
             ),
             'buy'] = 1
@@ -135,8 +135,8 @@ class FrostAuraMark1HyperOpt(IHyperOpt):
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                (dataframe['rsi'] > 94) &
-                (dataframe["close"] > dataframe['bb_lowerband1'])
+                (dataframe['rsi'] > 80) &
+                (dataframe["close"] > dataframe['bb_upperband1'])
             ),
             'sell'] = 1
 

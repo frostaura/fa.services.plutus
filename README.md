@@ -31,7 +31,7 @@ docker-compose run --rm freqtrade backtesting --export trades --config user_data
 ##### Create HTML Plot File for a Given Strategy's Performance
 docker-compose run --rm freqtrade plot-dataframe -s FrostAuraMark1Strategy -p LINK/BTC --indicators1 bb_lowerband,bb_middleband,bb_upperband --indicators2 rsi
 ##### Initiate HyperOpt for a Given Strategy
-docker-compose run --rm freqtrade hyperopt --config user_data/config.json -e 1500 --strategy FrostAuraMark1Strategy --hyperopt FrostAuraMark1HyperOpt --hyperopt-loss SharpeHyperOptLossDaily
+docker-compose run --rm freqtrade hyperopt --config user_data/config.json -e 250 --strategy FrostAuraMark1Strategy --hyperopt FrostAuraMark1HyperOpt --hyperopt-loss SharpeHyperOptLossDaily
 
 ## How To
 ### Getting Familiar

@@ -27,19 +27,19 @@ Automated builds are set up for Docker Hub. To use this service without the sour
 ##### Download Historical Market Data
 Download historical market data for the configured pairs in the config.json file. This data can in turn be used to run backtesting and/or optimizations.
 
-    docker-compose run --rm fam11h download-data --exchange binance --days 90 -t 1h 15m
+    docker-compose run --rm freqtrade download-data --exchange binance --days 90 -t 1h 15m
 ##### Initiate Backtesting
 This allows for testing a given strategy against downloaded market data. See the above. NOTE: Not specifying a time range means that backtesting will run on all downloaded market data.
 
-    docker-compose run --rm fam11h backtesting --export trades --config user_data/config.json --strategy FrostAuraM11hStrategy -i 1h
+    docker-compose run --rm freqtrade backtesting --export trades --config user_data/config.json --strategy FrostAuraM11hStrategy -i 1h
 ##### Create HTML Plot Graph File for a Given Strategy's Performance
 This allows us to generate an interactive HTML-based graph of a given pair's performance.
 
-    docker-compose run --rm fam11h plot-dataframe -s FrostAuraM11hStrategy -p LINK/BTC --indicators1 bb_lowerband,bb_middleband,bb_upperband --indicators2 rsi
+    docker-compose run --rm freqtrade plot-dataframe -s FrostAuraM11hStrategy -p LINK/BTC --indicators1 bb_lowerband,bb_middleband,bb_upperband --indicators2 rsi
 ##### Initiate HyperOpt for a Given Strategy (ML Optimization)
  This allows us to run an optimization of our own design in order to determine the optimal configuration of a strategy, given the downloaded market data. NOTE: Not specifying a time range means that optimizations will run on all downloaded market data.
 
-    docker-compose run --rm fam11h hyperopt --config user_data/config.json -e 250 --strategy FrostAuraM11hStrategy --hyperopt FrostAuraM1HyperOpt --hyperopt-loss SharpeHyperOptLossDaily -i 1h
+    docker-compose run --rm freqtrade hyperopt --config user_data/config.json -e 250 --strategy FrostAuraM11hStrategy --hyperopt FrostAuraM1HyperOpt --hyperopt-loss SharpeHyperOptLossDaily -i 1h
 
 ## How To
 ### Getting Familiar

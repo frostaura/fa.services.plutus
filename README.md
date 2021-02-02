@@ -25,13 +25,21 @@ Automated builds are set up for Docker Hub. To use this service without the sour
                     --strategy FrostAuraMark1Strategy
 #### Custom Commands
 ##### Download Historical Market Data
-docker-compose run --rm freqtrade download-data --exchange binance --days 90 -t 1h
+Download historical market data for the configured pairs in the config.json file. This data can in turn be used to run backtesting and/or optimizations.
+
+    docker-compose run --rm freqtrade download-data --exchange binance --days 90 -t 1h
 ##### Initiate Backtesting
-docker-compose run --rm freqtrade backtesting --export trades --config user_data/config.json --strategy FrostAuraMark1Strategy -i 1h
-##### Create HTML Plot File for a Given Strategy's Performance
-docker-compose run --rm freqtrade plot-dataframe -s FrostAuraMark1Strategy -p LINK/BTC --indicators1 bb_lowerband,bb_middleband,bb_upperband --indicators2 rsi
-##### Initiate HyperOpt for a Given Strategy
-docker-compose run --rm freqtrade hyperopt --config user_data/config.json -e 250 --strategy FrostAuraMark1Strategy --hyperopt FrostAuraMark1HyperOpt --hyperopt-loss SharpeHyperOptLossDaily
+This allows for testing a given strategy against downloaded market data. See the above. NOTE: Not specifying a time range means that backtesting will run on all downloaded market data.
+
+    docker-compose run --rm freqtrade backtesting --export trades --config user_data/config.json --strategy FrostAuraMark1Strategy -i 1h
+##### Create HTML Plot Graph File for a Given Strategy's Performance
+This allows us to generate an interactive HTML-based graph of a given pair's performance.
+
+    docker-compose run --rm freqtrade plot-dataframe -s FrostAuraMark1Strategy -p LINK/BTC --indicators1 bb_lowerband,bb_middleband,bb_upperband --indicators2 rsi
+##### Initiate HyperOpt for a Given Strategy (ML Optimization)
+ This allows us to run an optimization of our own design in order to determine the optimal configuration of a strategy, given the downloaded market data. NOTE: Not specifying a time range means that optimizations will run on all downloaded market data.
+
+    docker-compose run --rm freqtrade hyperopt --config user_data/config.json -e 250 --strategy FrostAuraMark1Strategy --hyperopt FrostAuraMark1HyperOpt --hyperopt-loss SharpeHyperOptLossDaily
 
 ## How To
 ### Getting Familiar

@@ -8,7 +8,7 @@ from freqtrade.optimize.hyperopt_interface import IHyperOpt
 import talib.abstract as ta
 import freqtrade.vendor.qtpylib.indicators as qtpylib
 
-class FrostAuraMark1HyperOpt(IHyperOpt):
+class FrostAuraM1HyperOpt(IHyperOpt):
     @staticmethod
     def populate_indicators(dataframe: DataFrame, metadata: dict) -> DataFrame:
         # RSI
@@ -118,26 +118,3 @@ class FrostAuraMark1HyperOpt(IHyperOpt):
             Categorical([True, False], name='sell-rsi-enabled'),
             Categorical(['sell-bb_lower1', 'sell-bb_middle1', 'sell-bb_upper1'], name='sell-trigger')
         ]
-
-    def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        minimum_coin_price = 0.0000015
-        
-        dataframe.loc[
-            (
-                (dataframe['rsi'] > 39) &
-                (dataframe["close"] < dataframe['bb_lowerband2']) &
-                (dataframe["close"] > minimum_coin_price)
-            ),
-            'buy'] = 1
-
-        return dataframe
-
-    def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        dataframe.loc[
-            (
-                (dataframe['rsi'] > 80) &
-                (dataframe["close"] > dataframe['bb_upperband1'])
-            ),
-            'sell'] = 1
-
-        return dataframe

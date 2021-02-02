@@ -1,11 +1,10 @@
 {
     "max_open_trades": 15,
     "stake_currency": "BTC",
-    "stake_amount": 0.01,
+    "stake_amount": 0.0101,
     "tradable_balance_ratio": 0.99,
-    "fiat_display_currency": "USD",
-    "timeframe": "1h",
-    "dry_run": false,
+    "fiat_display_currency": "ZAR",
+    "dry_run": true,
     "dry_run_wallet": 0.08423594,
     "cancel_open_orders_on_exit": false,
     "unfilledtimeout": {
@@ -33,7 +32,9 @@
         "name": "binance",
         "key": "...",
         "secret": "...",
-        "ccxt_config": {"enableRateLimit": true},
+        "ccxt_config": {
+            "enableRateLimit": true
+        },
         "ccxt_async_config": {
             "enableRateLimit": false
         },
@@ -94,7 +95,7 @@
         }
     ],
     "telegram": {
-        "enabled": true,
+        "enabled": false,
         "token": "...",
         "chat_id": "1551490751"
     },

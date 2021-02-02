@@ -5,15 +5,15 @@ from freqtrade.strategy.interface import IStrategy
 import talib.abstract as ta
 import freqtrade.vendor.qtpylib.indicators as qtpylib
 
-class FrostAuraMark1Strategy(IStrategy):
+class FrostAuraM115mStrategy(IStrategy):
     """
     This is FrostAura's mark 1 strategy which aims to make purchase decisions
     based on the BB and RSI.
     
     Last Optimization:
-        Sharpe Ratio    : 5.34636 (prev. 3.96603)
-        Profit %        : 751.51% (prev. 537.12%)
-        Optimized for   : Last 90 days, 1h
+        Sharpe Ratio    : 4.78832
+        Profit %        : 1494.07%
+        Optimized for   : Last 90 days, 15min
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -21,20 +21,20 @@ class FrostAuraMark1Strategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.18525,
-        "209": 0.12282,
-        "858": 0.08865,
-        "2276": 0
+        "0": 0.2887,
+        "57": 0.11713,
+        "165": 0.04254,
+        "479": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.49286
+    stoploss = -0.47049
 
     # Trailing stoploss
     trailing_stop = False
 
     # Optimal ticker interval for the strategy.
-    timeframe = '1h'
+    timeframe = '15m'
 
     # Run "populate_indicators()" only for new candle.
     process_only_new_candles = False
@@ -107,8 +107,8 @@ class FrostAuraMark1Strategy(IStrategy):
         
         dataframe.loc[
             (
-                (dataframe['rsi'] > 39) &
-                (dataframe["close"] < dataframe['bb_lowerband2']) &
+                (dataframe['rsi'] > 18) &
+                (dataframe["close"] < dataframe['bb_lowerband1']) &
                 (dataframe["close"] > minimum_coin_price)
             ),
             'buy'] = 1
@@ -118,8 +118,8 @@ class FrostAuraMark1Strategy(IStrategy):
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                (dataframe['rsi'] > 80) &
-                (dataframe["close"] > dataframe['bb_upperband1'])
+                (dataframe['rsi'] > 59) &
+                (dataframe["close"] > dataframe['bb_lowerband1'])
             ),
             'sell'] = 1
         

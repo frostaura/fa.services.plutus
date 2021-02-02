@@ -1,16 +1,30 @@
 version: '3'
 services:
-  freqtrade:
+  fam11h:
     build:
       context: ./
       dockerfile: ./Dockerfile
     restart: unless-stopped
-    container_name: freqtrade
+    container_name: fam11h
     volumes:
-      - "./user_data:/freqtrade/user_data"
+      - "./fam11h/user_data:/freqtrade/user_data"
     command: >
       trade
       --logfile /freqtrade/user_data/logs/freqtrade.log
       --db-url sqlite:////freqtrade/user_data/tradesv3.sqlite
       --config /freqtrade/user_data/config.json
-      --strategy FrostAuraMark1Strategy
+      --strategy FrostAuraM11hStrategy
+  fam115m:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    restart: unless-stopped
+    container_name: fam115m
+    volumes:
+      - "./fam115m/user_data:/freqtrade/user_data"
+    command: >
+      trade
+      --logfile /freqtrade/user_data/logs/freqtrade.log
+      --db-url sqlite:////freqtrade/user_data/tradesv3.sqlite
+      --config /freqtrade/user_data/config.json
+      --strategy FrostAuraM115mStrategy

@@ -8,8 +8,8 @@
     "dry_run_wallet": 0.08423594,
     "cancel_open_orders_on_exit": false,
     "unfilledtimeout": {
-        "buy": 30,
-        "sell": 50
+        "buy": 10,
+        "sell": 30
     },
     "bid_strategy": {
         "use_order_book": true,

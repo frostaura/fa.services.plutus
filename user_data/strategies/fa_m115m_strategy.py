@@ -11,8 +11,9 @@ class FrostAuraM115mStrategy(IStrategy):
     based on the BB and RSI.
     
     Last Optimization:
-        Sharpe Ratio    : 4.78832
-        Profit %        : 1494.07%
+        Sharpe Ratio    : 4.13782 (prev 4.78832)
+        Profit %        : 1384.18% (prev 1494.07%)
+        Avg             : 545.2m
         Optimized for   : Last 90 days, 15min
     """
     # Strategy interface version - allow new iterations of the strategy interface.
@@ -21,14 +22,14 @@ class FrostAuraM115mStrategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.2887,
-        "57": 0.11713,
-        "165": 0.04254,
-        "479": 0
+        "0": 0.30409,
+        "44": 0.09039,
+        "208": 0.04796,
+        "497": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.47049
+    stoploss = -0.26168
 
     # Trailing stoploss
     trailing_stop = False
@@ -44,7 +45,7 @@ class FrostAuraM115mStrategy(IStrategy):
     sell_profit_only = False
     ignore_roi_if_buy_signal = False
 
-    # Number of candles the strategy requires before producing valid signals
+    # Number of candles the strategy requires before producing valid signals.
     startup_candle_count: int = 30
 
     # Optional order type mapping.
@@ -107,8 +108,8 @@ class FrostAuraM115mStrategy(IStrategy):
         
         dataframe.loc[
             (
-                (dataframe['rsi'] > 18) &
-                (dataframe["close"] < dataframe['bb_lowerband1']) &
+                (dataframe['rsi'] > 22) &
+                (dataframe["close"] < dataframe['bb_lowerband3']) &
                 (dataframe["close"] > minimum_coin_price)
             ),
             'buy'] = 1
@@ -118,7 +119,7 @@ class FrostAuraM115mStrategy(IStrategy):
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                (dataframe['rsi'] > 59) &
+                (dataframe['rsi'] > 61) &
                 (dataframe["close"] > dataframe['bb_lowerband1'])
             ),
             'sell'] = 1

@@ -5,10 +5,10 @@ from freqtrade.strategy.interface import IStrategy
 import talib.abstract as ta
 import freqtrade.vendor.qtpylib.indicators as qtpylib
 
-class FrostAuraM11hStrategy(IStrategy):
+class FrostAuraM21hStrategy(IStrategy):
     """
-    This is FrostAura's mark 1 strategy which aims to make purchase decisions
-    based on the BB and RSI.
+    This is FrostAura's mark 2 strategy which aims to make purchase decisions
+    based on the Stochastic and RSI.
     
     Last Optimization:
         Sharpe Ratio    : 6.89613 (prev. 5.34636)
@@ -21,14 +21,14 @@ class FrostAuraM11hStrategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.43322,
-        "342": 0.2069,
-        "932": 0.08788,
-        "2233": 0
+        "0": 0.2581,
+        "452": 0.14684,
+        "921": 0.06857,
+        "2231": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.49283
+    stoploss = -0.49725
 
     # Trailing stoploss
     trailing_stop = False
@@ -44,7 +44,7 @@ class FrostAuraM11hStrategy(IStrategy):
     sell_profit_only = False
     ignore_roi_if_buy_signal = False
 
-    # Number of candles the strategy requires before producing valid signals.
+    # Number of candles the strategy requires before producing valid signals
     startup_candle_count: int = 30
 
     # Optional order type mapping.
@@ -84,21 +84,10 @@ class FrostAuraM11hStrategy(IStrategy):
         # RSI
         dataframe['rsi'] = ta.RSI(dataframe)
 
-        # Bollinger Bands
-        bollinger1 = qtpylib.bollinger_bands(qtpylib.typical_price(dataframe), window=20, stds=1)
-        dataframe['bb_lowerband1'] = bollinger1['lower']
-        dataframe['bb_middleband1'] = bollinger1['mid']
-        dataframe['bb_upperband1'] = bollinger1['upper']
-        
-        bollinger2 = qtpylib.bollinger_bands(qtpylib.typical_price(dataframe), window=20, stds=2)
-        dataframe['bb_lowerband2'] = bollinger2['lower']
-        dataframe['bb_middleband2'] = bollinger2['mid']
-        dataframe['bb_upperband2'] = bollinger2['upper']
-        
-        bollinger3 = qtpylib.bollinger_bands(qtpylib.typical_price(dataframe), window=20, stds=3)
-        dataframe['bb_lowerband3'] = bollinger3['lower']
-        dataframe['bb_middleband3'] = bollinger3['mid']
-        dataframe['bb_upperband3'] = bollinger3['upper']
+        # Stochastic Slow
+        stoch = ta.STOCH(dataframe)
+        dataframe['slowd'] = stoch['slowd']
+        dataframe['slowk'] = stoch['slowk']
 
         return dataframe
 
@@ -107,8 +96,9 @@ class FrostAuraM11hStrategy(IStrategy):
         
         dataframe.loc[
             (
-                #(dataframe['rsi'] > 39) &
-                (dataframe["close"] < dataframe['bb_lowerband2']) &
+                (dataframe['rsi'] > 50) &
+                (dataframe["slowd"] > 30) &
+                (dataframe["slowk"] > 30) &
                 (dataframe["close"] > minimum_coin_price)
             ),
             'buy'] = 1
@@ -118,8 +108,9 @@ class FrostAuraM11hStrategy(IStrategy):
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                (dataframe['rsi'] > 71) &
-                (dataframe["close"] > dataframe['bb_middleband1'])
+                (dataframe['rsi'] < 50) &
+                (dataframe["slowd"] < 70) &
+                (dataframe["slowk"] < 70)
             ),
             'sell'] = 1
         

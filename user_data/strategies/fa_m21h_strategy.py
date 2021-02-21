@@ -11,10 +11,10 @@ class FrostAuraM21hStrategy(IStrategy):
     based on the Stochastic and RSI.
     
     Last Optimization:
-        Sharpe Ratio    : 6.41952 (prev 6.62005)
-        Profit %        : 1432.33% (prev 1502.39%)
-        Optimized for   : Last 90 days, 1h
-        ATT             : 4321.0m (prev 4755.8m)
+        Sharpe Ratio    : 6.24747% (prev 6.41952)
+        Profit %        : 1537.94% (1432.33%)
+        Optimized for   : Last 109 days, 1h
+        ATT             : 719.4m (prev 4321.0m)
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -22,20 +22,20 @@ class FrostAuraM21hStrategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.56383,
-        "204": 0.19557,
-        "894": 0.05438,
-        "1740": 0
+        "0": 0.32365,
+        "359": 0.12673,
+        "934": 0.08834,
+        "2090": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.46938
+    stoploss = -0.44897
 
     # Trailing stoploss
     trailing_stop = False
 
     # Optimal ticker interval for the strategy.
-    timeframe = '1h'
+    timeframe = '15m'
 
     # Run "populate_indicators()" only for new candle.
     process_only_new_candles = False
@@ -97,9 +97,9 @@ class FrostAuraM21hStrategy(IStrategy):
         
         dataframe.loc[
             (
-                (dataframe['rsi'] > 15) &
-                (dataframe["slowd"] > 73) &
-                (dataframe["slowk"] > 79) &
+                (dataframe['rsi'] > 48) &
+                (dataframe["slowd"] > 79) &
+                (dataframe["slowk"] > 77) &
                 (dataframe["close"] > minimum_coin_price)
             ),
             'buy'] = 1
@@ -109,9 +109,9 @@ class FrostAuraM21hStrategy(IStrategy):
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                (dataframe['rsi'] < 15) &
-                (dataframe["slowd"] < 73) &
-                (dataframe["slowk"] < 79)
+                (dataframe['rsi'] < 48) &
+                (dataframe["slowd"] < 79) &
+                (dataframe["slowk"] < 77)
             ),
             'sell'] = 1
         

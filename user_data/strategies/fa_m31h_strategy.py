@@ -11,10 +11,10 @@ class FrostAuraM31hStrategy(IStrategy):
     based on the BB, RSI and Stochastic.
     
     Last Optimization:
-        Sharpe Ratio    : 8.96043
-        Profit %        : 1229.25%
-        Optimized for   : Last 105 days, 1h
-        Avg             : 4186.6m
+        Sharpe Ratio    : 6.75469 (prev 8.96043)
+        Profit %        : 1323.0% (prev 1229.25%)
+        Optimized for   : Last 109 days, 1h
+        Avg             : 3863.1m (prev 4186.6m)
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -22,14 +22,14 @@ class FrostAuraM31hStrategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.16197,
-        "122": 0.11894,
-        "736": 0.04268,
-        "1829": 0
+        "0": 0.46719,
+        "317": 0.11127,
+        "892": 0.06525,
+        "2319": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.49961
+    stoploss = -0.49435
 
     # Trailing stoploss
     trailing_stop = False
@@ -105,6 +105,11 @@ class FrostAuraM31hStrategy(IStrategy):
         dataframe['bb_lowerband3'] = bollinger3['lower']
         dataframe['bb_middleband3'] = bollinger3['mid']
         dataframe['bb_upperband3'] = bollinger3['upper']
+        
+        bollinger4 = qtpylib.bollinger_bands(qtpylib.typical_price(dataframe), window=20, stds=4)
+        dataframe['bb_lowerband4'] = bollinger4['lower']
+        dataframe['bb_middleband4'] = bollinger4['mid']
+        dataframe['bb_upperband4'] = bollinger4['upper']
 
         return dataframe
 
@@ -113,11 +118,11 @@ class FrostAuraM31hStrategy(IStrategy):
         
         dataframe.loc[
             (
-                #(dataframe['slowd'] > 8) &
-                #(dataframe['slowk'] > 8) &
-                (dataframe['rsi'] > 6) &
+                (dataframe['slowd'] > 24) &
+                (dataframe['slowk'] > 24) &
+                (dataframe['rsi'] > 37) &
                 (dataframe['slowk'] < dataframe['slowd']) &
-                (dataframe["close"] < dataframe['bb_lowerband2']) &
+                (dataframe["close"] < dataframe['bb_lowerband4']) &
                 (dataframe["close"] > minimum_coin_price)
             ),
             'buy'] = 1
@@ -128,8 +133,8 @@ class FrostAuraM31hStrategy(IStrategy):
         dataframe.loc[
             (
                 (dataframe['slowk'] < dataframe['slowd']) &
-                (dataframe['rsi'] > 76) &
-                (dataframe["close"] > dataframe['bb_middleband1'])
+                (dataframe['rsi'] > 84) &
+                (dataframe["close"] > dataframe['bb_lowerband1'])
             ),
             'sell'] = 1
         

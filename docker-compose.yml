@@ -1,16 +1,25 @@
-version: '3'
+version: "3"
 services:
-  freqtrade:
-    build:
-      context: ./
-      dockerfile: ./Dockerfile
-    restart: unless-stopped
-    container_name: freqtrade
-    volumes:
-      - "./user_data:/freqtrade/user_data"
-    command: >
-      trade
-      --logfile /freqtrade/user_data/logs/freqtrade.log
-      --db-url sqlite:////freqtrade/user_data/tradesv3.sqlite
-      --config /freqtrade/user_data/config.json
-      --strategy FrostAuraM11hStrategy
+    db:
+        image: "mcr.microsoft.com/mssql/server"
+        environment:
+            - SA_PASSWORD=Password1234
+            - ACCEPT_EULA=Y
+        ports:
+            - 1433:1433
+    web:
+        build:
+            context: ./
+            dockerfile: ./Dockerfile
+        ports:
+            - 8082:80
+            - 8083:443
+        depends_on:
+            - db
+        environment:
+            #- ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=https://+:443;http://+:80
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=Password1234
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+        volumes:
+            - ~/.aspnet/https:/https:ro

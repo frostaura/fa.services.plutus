@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Engines\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Managers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FrostAura.Libraries.Core" Version="1.1.1" />
+    <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="10.5.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.8" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FrostAura.Services.Plutus.Data\FrostAura.Services.Plutus.Data.csproj" />
+    <ProjectReference Include="..\FrostAura.Services.Plutus.Shared\FrostAura.Services.Plutus.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

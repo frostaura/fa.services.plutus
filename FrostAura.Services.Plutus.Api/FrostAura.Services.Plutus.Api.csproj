@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FrostAura.Libraries.Core" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FrostAura.Services.Plutus.Core\FrostAura.Services.Plutus.Core.csproj" />
+    <ProjectReference Include="..\FrostAura.Services.Plutus.Data\FrostAura.Services.Plutus.Data.csproj" />
+    <ProjectReference Include="..\FrostAura.Services.Plutus.Shared\FrostAura.Services.Plutus.Shared.csproj" />
+  </ItemGroup>
+
+
+</Project>

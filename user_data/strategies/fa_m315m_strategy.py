@@ -5,16 +5,16 @@ from freqtrade.strategy.interface import IStrategy
 import talib.abstract as ta
 import freqtrade.vendor.qtpylib.indicators as qtpylib
 
-class FrostAuraM11hStrategy(IStrategy):
+class FrostAuraM315mStrategy(IStrategy):
     """
-    This is FrostAura's mark 1 strategy which aims to make purchase decisions
-    based on the BB and RSI.
+    This is FrostAura's mark 3 strategy which aims to make purchase decisions
+    based on the BB, RSI and Stochastic.
     
     Last Optimization:
-        Sharpe Ratio    : 7.9319 (prev 6.99006)
-        Profit %        : 1303.42% (prev 1162.01%)
-        Optimized for   : Last 115+ days, 1h
-        Avg             : 3465.8m (prev 4231.6m)
+        Sharpe Ratio    : 6.23754
+        Profit %        : 1311.96%
+        Optimized for   : Last 115+ days, 15m
+        Avg             : 986.6m
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -22,20 +22,20 @@ class FrostAuraM11hStrategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.31637,
-        "467": 0.10191,
-        "1143": 0.0253,
-        "2368": 0
+        "0": 0.18418,
+        "36": 0.10736,
+        "91": 0.02998,
+        "438": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.40618
+    stoploss = -0.41114
 
     # Trailing stoploss
     trailing_stop = False
 
     # Optimal ticker interval for the strategy.
-    timeframe = '1h'
+    timeframe = '15m'
 
     # Run "populate_indicators()" only for new candle.
     process_only_new_candles = False
@@ -84,6 +84,11 @@ class FrostAuraM11hStrategy(IStrategy):
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         # RSI
         dataframe['rsi'] = ta.RSI(dataframe)
+        
+        # Stochastic Slow
+        stoch = ta.STOCH(dataframe)
+        dataframe['slowd'] = stoch['slowd']
+        dataframe['slowk'] = stoch['slowk']
 
         # Bollinger Bands
         bollinger1 = qtpylib.bollinger_bands(qtpylib.typical_price(dataframe), window=20, stds=1)
@@ -100,6 +105,11 @@ class FrostAuraM11hStrategy(IStrategy):
         dataframe['bb_lowerband3'] = bollinger3['lower']
         dataframe['bb_middleband3'] = bollinger3['mid']
         dataframe['bb_upperband3'] = bollinger3['upper']
+        
+        bollinger4 = qtpylib.bollinger_bands(qtpylib.typical_price(dataframe), window=20, stds=4)
+        dataframe['bb_lowerband4'] = bollinger4['lower']
+        dataframe['bb_middleband4'] = bollinger4['mid']
+        dataframe['bb_upperband4'] = bollinger4['upper']
 
         return dataframe
 
@@ -108,8 +118,11 @@ class FrostAuraM11hStrategy(IStrategy):
         
         dataframe.loc[
             (
-                #(dataframe['rsi'] > 28) &
-                (dataframe["close"] < dataframe['bb_lowerband2']) &
+                #(dataframe['slowd'] > 30) &
+                #(dataframe['slowk'] > 30) &
+                (dataframe['rsi'] > 22) &
+                (dataframe['slowk'] < dataframe['slowd']) &
+                (dataframe["close"] < dataframe['bb_lowerband3']) &
                 (dataframe["close"] > minimum_coin_price)
             ),
             'buy'] = 1
@@ -119,8 +132,9 @@ class FrostAuraM11hStrategy(IStrategy):
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                (dataframe['rsi'] > 97) &
-                (dataframe["close"] > dataframe['bb_upperband1'])
+                (dataframe['slowk'] < dataframe['slowd']) &
+                (dataframe['rsi'] > 72) &
+                (dataframe["close"] > dataframe['bb_middleband1'])
             ),
             'sell'] = 1
         

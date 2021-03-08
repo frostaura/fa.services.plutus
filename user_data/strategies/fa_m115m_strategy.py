@@ -11,10 +11,10 @@ class FrostAuraM115mStrategy(IStrategy):
     based on the BB and RSI.
     
     Last Optimization:
-        Sharpe Ratio    : 4.9885 (prev 4.13782)
-        Profit %        : 1781.07% (prev 1384.18%)
-        Avg             : 437.6m (prev 545.2m)
-        Optimized for   : Last 90 days, 15min
+        Sharpe Ratio    : 5.11912 (prev 4.9885)
+        Profit %        : 1880.60% (prev 1962.82%)
+        Avg             : 209.6m (prev 437.6m)
+        Optimized for   : Last 100+ days, 15min
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -22,14 +22,14 @@ class FrostAuraM115mStrategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.31895,
-        "79": 0.14415,
-        "192": 0.04802,
-        "512": 0
+        "0": 0.25023,
+        "89": 0.09497,
+        "248": 0.02596,
+        "350": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.46383
+    stoploss = -0.34316
 
     # Trailing stoploss
     trailing_stop = False
@@ -108,8 +108,8 @@ class FrostAuraM115mStrategy(IStrategy):
         
         dataframe.loc[
             (
-                (dataframe['rsi'] > 35) &
-                (dataframe["close"] < dataframe['bb_lowerband3']) &
+                #(dataframe['rsi'] > 45) &
+                (dataframe["close"] < dataframe['bb_lowerband2']) &
                 (dataframe["close"] > minimum_coin_price)
             ),
             'buy'] = 1
@@ -119,7 +119,7 @@ class FrostAuraM115mStrategy(IStrategy):
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                (dataframe['rsi'] > 59) &
+                (dataframe['rsi'] > 53) &
                 (dataframe["close"] > dataframe['bb_lowerband1'])
             ),
             'sell'] = 1

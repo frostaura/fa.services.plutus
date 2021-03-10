@@ -49,7 +49,7 @@ This allows us to generate an interactive HTML-based graph of a given pair's per
 #### Strategies
 
 ## Credits
-Freqtrade (https://www.freqtrade.io/) is used as the underlying trading framework so all credit to them. This repository aims to provide custom strategies for this framework and create an automated pipeling where the strategies can evolve over nightly builds by ML optimizations running on each build.
+Freqtrade (https://www.freqtrade.io/) is used as the underlying trading framework so all credit to them. This repository aims to provide custom strategies for this framework and create an automated pipeline where the strategies can evolve over nightly builds by ML optimizations running on each build.
 
 ## Contribute
 In order to contribute, simply fork the repository, make changes and create a pull request.

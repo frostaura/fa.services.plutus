@@ -11,10 +11,9 @@ class FrostAuraM21hStrategy(IStrategy):
     based on the Stochastic and RSI.
     
     Last Optimization:
-        Sharpe Ratio    : 6.24747% (prev 6.41952)
-        Profit %        : 1537.94% (1432.33%)
-        Optimized for   : Last 109 days, 1h
-        ATT             : 719.4m (prev 4321.0m)
+        Profit %        : 1184.18%
+        Optimized for   : Last 60 days, 1h
+        ATT             : 2927.3m
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -22,14 +21,14 @@ class FrostAuraM21hStrategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.32365,
-        "359": 0.12673,
-        "934": 0.08834,
-        "2090": 0
+        "0": 0.38832,
+        "469": 0.23677,
+        "1189": 0.07779,
+        "1926": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.44897
+    stoploss = -0.49383
 
     # Trailing stoploss
     trailing_stop = False
@@ -97,9 +96,9 @@ class FrostAuraM21hStrategy(IStrategy):
         
         dataframe.loc[
             (
-                (dataframe['rsi'] > 48) &
-                (dataframe["slowd"] > 79) &
-                (dataframe["slowk"] > 77) &
+                (dataframe['rsi'] > 24) &
+                (dataframe["slowd"] > 61) &
+                (dataframe["slowk"] > 62) &
                 (dataframe["close"] > minimum_coin_price)
             ),
             'buy'] = 1
@@ -109,9 +108,9 @@ class FrostAuraM21hStrategy(IStrategy):
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                (dataframe['rsi'] < 48) &
-                (dataframe["slowd"] < 79) &
-                (dataframe["slowk"] < 77)
+                (dataframe['rsi'] < 24) &
+                (dataframe["slowd"] < 61) &
+                (dataframe["slowk"] < 62)
             ),
             'sell'] = 1
         

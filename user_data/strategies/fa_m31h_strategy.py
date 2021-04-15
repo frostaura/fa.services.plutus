@@ -11,9 +11,9 @@ class FrostAuraM31hStrategy(IStrategy):
     based on the BB, RSI and Stochastic.
     
     Last Optimization:
-        Profit %        : 1099.06%
+        Profit %        : 1432.18%
         Optimized for   : Last 60 days, 1h
-        Avg             : 2207.9m
+        Avg             : 2977.2m
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -21,14 +21,14 @@ class FrostAuraM31hStrategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.60575,
-        "153": 0.18941,
-        "316": 0.0857,
-        "1583": 0
+        "0": 0.29565,
+        "450": 0.1765,
+        "1103": 0.08667,
+        "2526": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.23721
+    stoploss = -0.34214
 
     # Trailing stoploss
     trailing_stop = False
@@ -117,11 +117,11 @@ class FrostAuraM31hStrategy(IStrategy):
         
         dataframe.loc[
             (
-                #(dataframe['slowd'] > 21) &
-                #(dataframe['slowk'] > 21) &
-                (dataframe['rsi'] > 32) &
+                (dataframe['slowd'] > 22) &
+                (dataframe['slowk'] > 22) &
+                (dataframe['rsi'] > 7) &
                 (dataframe['slowk'] < dataframe['slowd']) &
-                (dataframe["close"] < dataframe['bb_lowerband3']) &
+                (dataframe["close"] < dataframe['bb_lowerband4']) &
                 (dataframe["close"] > minimum_coin_price)
             ),
             'buy'] = 1
@@ -132,8 +132,8 @@ class FrostAuraM31hStrategy(IStrategy):
         dataframe.loc[
             (
                 (dataframe['slowk'] < dataframe['slowd']) &
-                (dataframe['rsi'] > 73) &
-                (dataframe["close"] > dataframe['bb_middleband1'])
+                (dataframe['rsi'] > 90) &
+                (dataframe["close"] > dataframe['bb_lowerband1'])
             ),
             'sell'] = 1
         

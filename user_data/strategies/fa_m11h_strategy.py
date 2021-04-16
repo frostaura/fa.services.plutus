@@ -99,6 +99,11 @@ class FrostAuraM11hStrategy(IStrategy):
         dataframe['bb_lowerband3'] = bollinger3['lower']
         dataframe['bb_middleband3'] = bollinger3['mid']
         dataframe['bb_upperband3'] = bollinger3['upper']
+        
+        bollinger4 = qtpylib.bollinger_bands(qtpylib.typical_price(dataframe), window=20, stds=4)
+        dataframe['bb_lowerband4'] = bollinger4['lower']
+        dataframe['bb_middleband4'] = bollinger4['mid']
+        dataframe['bb_upperband4'] = bollinger4['upper']
 
         return dataframe
 

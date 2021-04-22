@@ -52,7 +52,7 @@ class FrostAuraM1HyperOpt(IHyperOpt):
 
             # GUARDS AND TRENDS
             if 'rsi-enabled' in params and params['rsi-enabled']:
-                conditions.append(dataframe['rsi'] > params['rsi-value'])
+                conditions.append(dataframe['rsi'] < params['rsi-value'])
 
             # TRIGGERS
             if 'trigger' in params:

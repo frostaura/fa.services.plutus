@@ -11,9 +11,9 @@ class FrostAuraM21hStrategy(IStrategy):
     based on the Stochastic and RSI.
     
     Last Optimization:
-        Profit %        : 1570.71%
+        Profit %        : 1539.85%
         Optimized for   : Last 60 days, 1h
-        Avg             : 474.4m
+        Avg             : 908.2m
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -21,20 +21,20 @@ class FrostAuraM21hStrategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.18626,
-        "407": 0.15886,
-        "872": 0.06565,
-        "1443": 0
+        "0": 0.32523,
+        "364": 0.19678,
+        "1045": 0.08867,
+        "1967": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.48329
+    stoploss = -0.14413
 
     # Trailing stoploss
     trailing_stop = False
 
     # Optimal ticker interval for the strategy.
-    timeframe = '15m'
+    timeframe = '1h'
 
     # Run "populate_indicators()" only for new candle.
     process_only_new_candles = False
@@ -96,9 +96,9 @@ class FrostAuraM21hStrategy(IStrategy):
         
         dataframe.loc[
             (
-                (dataframe['rsi'] > 58) &
-                (dataframe["slowd"] > 48) &
-                (dataframe["slowk"] > 50) &
+                (dataframe['rsi'] > 26) &
+                (dataframe["slowd"] > 15) &
+                (dataframe["slowk"] > 17) &
                 (dataframe["close"] > minimum_coin_price)
             ),
             'buy'] = 1
@@ -109,8 +109,8 @@ class FrostAuraM21hStrategy(IStrategy):
         dataframe.loc[
             (
                 (dataframe['rsi'] < 58) &
-                (dataframe["slowd"] < 48) &
-                (dataframe["slowk"] < 50)
+                (dataframe["slowd"] < 72) &
+                (dataframe["slowk"] < 66)
             ),
             'sell'] = 1
         

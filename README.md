@@ -55,4 +55,5 @@ Freqtrade (https://www.freqtrade.io/) is used as the underlying trading framewor
 In order to contribute, simply fork the repository, make changes and create a pull request.
 
 ## Support
+To support me in soending time publishing and optimizing strategies, please use my referral link to sign up for Binance: https://accounts.binance.com/en/register?ref=68898442 it won't cost you anything but will help me lots :)
 For any queries, contact dean.martin@frostaura.net.

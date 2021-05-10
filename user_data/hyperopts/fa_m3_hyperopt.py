@@ -54,16 +54,25 @@ class FrostAuraM3HyperOpt(IHyperOpt):
             conditions = []
             minimum_coin_price = 0.0000015
 
-            # GUARDS AND TRENDS
-            conditions.append(dataframe['rsi'] > params['rsi-value'])
-                
-            if 'stoch-enabled' in params and params['stoch-enabled']:
-                conditions.append(dataframe['slowd'] > params['stoch-value'])
-                conditions.append(dataframe['slowk'] > params['stoch-value'])
-                
-            conditions.append(dataframe['slowk'] < dataframe['slowd'])
-
             # TRIGGERS
+            if 'stoch-value-d-direction' in params:
+                if params['stoch-value-d-direction'] == '>':
+                    conditions.append(dataframe['slowd'] > params['stoch-value-d'])
+                if params['stoch-value-d-direction'] == '<':
+                    conditions.append(dataframe['slowd'] < params['stoch-value-d'])
+                    
+            if 'stoch-value-k-direction' in params:
+                if params['stoch-value-k-direction'] == '>':
+                    conditions.append(dataframe['slowk'] > params['stoch-value-k'])
+                if params['stoch-value-k-direction'] == '<':
+                    conditions.append(dataframe['slowk'] < params['stoch-value-k'])
+            
+            if 'rsi-direction' in params:
+                if params['rsi-direction'] == '>':
+                    conditions.append(dataframe['rsi'] > params['rsi-value'])
+                if params['rsi-direction'] == '<':
+                    conditions.append(dataframe['rsi'] < params['rsi-value'])
+            
             if 'trigger' in params:
                 if params['trigger'] == 'bb_lower1':
                     conditions.append(dataframe['close'] < dataframe['bb_lowerband1'])
@@ -88,9 +97,12 @@ class FrostAuraM3HyperOpt(IHyperOpt):
     @staticmethod
     def indicator_space() -> List[Dimension]:
         return [
-            Integer(5, 50, name='rsi-value'),
-            Integer(5, 30, name='stoch-value'),
-            Categorical([True, False], name='stoch-enabled'),
+            Integer(20, 80, name='rsi-value'),
+            Categorical(['>', '<'], name='rsi-direction'),
+            Integer(20, 80, name='stoch-value-k'),
+            Categorical(['>', '<'], name='stoch-value-k-direction'),
+            Integer(20, 80, name='stoch-value-d'),
+            Categorical(['>', '<'], name='stoch-value-d-direction'),
             Categorical(['bb_lower1', 'bb_lower2', 'bb_lower3', 'bb_lower4'], name='trigger')
         ]
 
@@ -99,11 +111,25 @@ class FrostAuraM3HyperOpt(IHyperOpt):
         def populate_sell_trend(dataframe: DataFrame, metadata: dict) -> DataFrame:
             conditions = []
 
-            # GUARDS AND TRENDS
-            conditions.append(dataframe['rsi'] > params['sell-rsi-value'])  
-            conditions.append(dataframe['slowk'] < dataframe['slowd'])
-
             # TRIGGERS
+            if 'sell-stoch-value-d-direction' in params:
+                if params['sell-stoch-value-d-direction'] == '>':
+                    conditions.append(dataframe['slowd'] > params['sell-stoch-value-d'])
+                if params['sell-stoch-value-d-direction'] == '<':
+                    conditions.append(dataframe['slowd'] < params['sell-stoch-value-d'])
+                    
+            if 'sell-stoch-value-k-direction' in params:
+                if params['sell-stoch-value-k-direction'] == '>':
+                    conditions.append(dataframe['slowk'] > params['sell-stoch-value-k'])
+                if params['sell-stoch-value-k-direction'] == '<':
+                    conditions.append(dataframe['slowk'] < params['sell-stoch-value-k'])
+            
+            if 'sell-rsi-direction' in params:
+                if params['sell-rsi-direction'] == '>':
+                    conditions.append(dataframe['rsi'] > params['sell-rsi-value'])
+                if params['sell-rsi-direction'] == '<':
+                    conditions.append(dataframe['rsi'] < params['sell-rsi-value'])
+            
             if 'sell-trigger' in params:
                 if params['sell-trigger'] == 'sell-bb_lower1':
                     conditions.append(dataframe['close'] > dataframe['bb_lowerband1'])
@@ -124,6 +150,11 @@ class FrostAuraM3HyperOpt(IHyperOpt):
     @staticmethod
     def sell_indicator_space() -> List[Dimension]:
         return [
-            Integer(40, 90, name='sell-rsi-value'),
-            Categorical(['sell-bb_lower1', 'sell-bb_middle1', 'sell-bb_upper1'], name='sell-trigger')
+            Integer(20, 80, name='sell-rsi-value'),
+            Categorical(['>', '<'], name='sell-rsi-direction'),
+            Integer(20, 80, name='sell-stoch-value-k'),
+            Categorical(['>', '<'], name='sell-stoch-value-k-direction'),
+            Integer(20, 80, name='sell-stoch-value-d'),
+            Categorical(['>', '<'], name='sell-stoch-value-d-direction'),
+            Categorical(['bb_lower1', 'bb_lower2', 'bb_lower3', 'bb_lower4'], name='sell-trigger')
         ]

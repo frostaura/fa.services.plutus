@@ -39,7 +39,7 @@ This allows us to generate an interactive HTML-based graph of a given pair's per
 ##### Initiate HyperOpt for a Given Strategy (ML Optimization)
  This allows us to run an optimization of our own design in order to determine the optimal configuration of a strategy, given the downloaded market data. NOTE: Not specifying a time range means that optimizations will run on all downloaded market data.
 
-    docker-compose run --rm freqtrade hyperopt --config user_data/config.json -e 250 --strategy FrostAuraM11hStrategy --hyperopt FrostAuraM1HyperOpt --hyperopt-loss SharpeHyperOptLossDaily -i 1h
+    docker-compose run --rm freqtrade hyperopt --config user_data/config.json -e 250 --strategy FrostAuraM11hStrategy --hyperopt FrostAuraM1HyperOpt --hyperopt-loss OnlyProfitHyperOptLoss -i 1h
 
 ## How To
 ### Getting Familiar

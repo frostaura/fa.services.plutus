@@ -1,11 +1,11 @@
 {
     "max_open_trades": 15,
     "stake_currency": "BTC",
-    "stake_amount": 0.0101,
+    "stake_amount": 0.002,
     "tradable_balance_ratio": 0.99,
     "fiat_display_currency": "ZAR",
     "dry_run": true,
-    "dry_run_wallet": 0.08423594,
+    "dry_run_wallet": 0.04,
     "cancel_open_orders_on_exit": false,
     "unfilledtimeout": {
         "buy": 10,

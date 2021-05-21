@@ -11,9 +11,9 @@ class FrostAuraM21hStrategy(IStrategy):
     based on the Stochastic and RSI.
     
     Last Optimization:
-        Profit %        : 1539.85%
-        Optimized for   : Last 60 days, 1h
-        Avg             : 908.2m
+        Profit %        : 23.35% (Daily)
+        Optimized for   : Last 30 days, 1h
+        Avg             : 1567.0m
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -21,14 +21,14 @@ class FrostAuraM21hStrategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.32523,
-        "364": 0.19678,
-        "1045": 0.08867,
-        "1967": 0
+        "0": 0.09956,
+        "199": 0.0746,
+        "380": 0.03144,
+        "1118": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.14413
+    stoploss = -0.21546
 
     # Trailing stoploss
     trailing_stop = False
@@ -96,9 +96,9 @@ class FrostAuraM21hStrategy(IStrategy):
         
         dataframe.loc[
             (
-                (dataframe['rsi'] > 26) &
-                (dataframe["slowd"] > 15) &
-                (dataframe["slowk"] > 17) &
+                (dataframe['rsi'] > 16) &
+                (dataframe["slowd"] > 36) &
+                (dataframe["slowk"] > 36) &
                 (dataframe["close"] > minimum_coin_price)
             ),
             'buy'] = 1
@@ -108,9 +108,9 @@ class FrostAuraM21hStrategy(IStrategy):
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                (dataframe['rsi'] < 58) &
-                (dataframe["slowd"] < 72) &
-                (dataframe["slowk"] < 66)
+                (dataframe['rsi'] < 25) &
+                (dataframe["slowd"] < 55) &
+                (dataframe["slowk"] < 45)
             ),
             'sell'] = 1
         

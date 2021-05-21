@@ -34,23 +34,23 @@ class FrostAuraM2HyperOpt(IHyperOpt):
             minimum_coin_price = 0.0000015
 
             # TRIGGERS
-            if 'rsi-direction' in params:
-                if params['rsi-direction'] == '>':
-                    conditions.append(dataframe['rsi'] > params['rsi-value'])
-                if params['rsi-direction'] == '<':
-                    conditions.append(dataframe['rsi'] < params['rsi-value'])
+            #if 'rsi-direction' in params:
+                #if params['rsi-direction'] == '>':
+            conditions.append(dataframe['rsi'] > params['rsi-value'])
+                #if params['rsi-direction'] == '<':
+                    #conditions.append(dataframe['rsi'] < params['rsi-value'])
                     
-            if 'slowk-direction' in params:
-                if params['slowk-direction'] == '>':
-                    conditions.append(dataframe['slowk'] > params['slowk-value'])
-                if params['slowk-direction'] == '<':
-                    conditions.append(dataframe['slowk'] < params['slowk-value'])
+            #if 'slowk-direction' in params:
+                #if params['slowk-direction'] == '>':
+            conditions.append(dataframe['slowk'] > params['slowk-value'])
+                #if params['slowk-direction'] == '<':
+                    #conditions.append(dataframe['slowk'] < params['slowk-value'])
                     
-            if 'slowd-direction' in params:
-                if params['slowd-direction'] == '>':
-                    conditions.append(dataframe['slowd'] > params['slowd-value'])
-                if params['slowd-direction'] == '<':
-                    conditions.append(dataframe['slowd'] < params['slowd-value'])
+            #if 'slowd-direction' in params:
+                #if params['slowd-direction'] == '>':
+            conditions.append(dataframe['slowd'] > params['slowd-value'])
+                #if params['slowd-direction'] == '<':
+                    #conditions.append(dataframe['slowd'] < params['slowd-value'])
                     
             # GUARDS AND TRENDS
             conditions.append(dataframe["close"] > minimum_coin_price)
@@ -70,9 +70,9 @@ class FrostAuraM2HyperOpt(IHyperOpt):
             Integer(15, 85, name='rsi-value'),
             Integer(15, 45, name='slowk-value'),
             Integer(15, 45, name='slowd-value'),
-            Categorical(['>', '<'], name='rsi-direction'),
-            Categorical(['>', '<'], name='slowk-direction'),
-            Categorical(['>', '<'], name='slowd-direction')
+            #Categorical(['>', '<'], name='rsi-direction'),
+            #Categorical(['>', '<'], name='slowk-direction'),
+            #Categorical(['>', '<'], name='slowd-direction')
         ]
 
     @staticmethod
@@ -81,23 +81,23 @@ class FrostAuraM2HyperOpt(IHyperOpt):
             conditions = []
 
             # TRIGGERS
-            if 'sell-rsi-direction' in params:
-                if params['sell-rsi-direction'] == '>':
-                    conditions.append(dataframe['rsi'] > params['sell-rsi-value'])
-                if params['sell-rsi-direction'] == '<':
-                    conditions.append(dataframe['rsi'] < params['sell-rsi-value'])
+            #if 'sell-rsi-direction' in params:
+                #if params['sell-rsi-direction'] == '>':
+                    #conditions.append(dataframe['rsi'] > params['sell-rsi-value'])
+                #if params['sell-rsi-direction'] == '<':
+            conditions.append(dataframe['rsi'] < params['sell-rsi-value'])
                     
-            if 'sell-slowk-direction' in params:
-                if params['sell-slowk-direction'] == '>':
-                    conditions.append(dataframe['slowk'] > params['sell-slowk-value'])
-                if params['sell-slowk-direction'] == '<':
-                    conditions.append(dataframe['slowk'] < params['sell-slowk-value'])
+            #if 'sell-slowk-direction' in params:
+                #if params['sell-slowk-direction'] == '>':
+                    #conditions.append(dataframe['slowk'] > params['sell-slowk-value'])
+                #if params['sell-slowk-direction'] == '<':
+            conditions.append(dataframe['slowk'] < params['sell-slowk-value'])
                     
-            if 'sell-slowd-direction' in params:
-                if params['sell-slowd-direction'] == '>':
-                    conditions.append(dataframe['slowd'] > params['sell-slowd-value'])
-                if params['sell-slowd-direction'] == '<':
-                    conditions.append(dataframe['slowd'] < params['sell-slowd-value'])
+            #if 'sell-slowd-direction' in params:
+                #if params['sell-slowd-direction'] == '>':
+                    #conditions.append(dataframe['slowd'] > params['sell-slowd-value'])
+                #if params['sell-slowd-direction'] == '<':
+            conditions.append(dataframe['slowd'] < params['sell-slowd-value'])
             
             if conditions:
                 dataframe.loc[
@@ -114,7 +114,7 @@ class FrostAuraM2HyperOpt(IHyperOpt):
             Integer(15, 85, name='sell-rsi-value'),
             Integer(45, 85, name='sell-slowk-value'),
             Integer(45, 85, name='sell-slowd-value'),
-            Categorical(['>', '<'], name='sell-rsi-direction'),
-            Categorical(['>', '<'], name='sell-slowk-direction'),
-            Categorical(['>', '<'], name='sell-slowd-direction')
+            #Categorical(['>', '<'], name='sell-rsi-direction'),
+            #Categorical(['>', '<'], name='sell-slowk-direction'),
+            #Categorical(['>', '<'], name='sell-slowd-direction')
         ]

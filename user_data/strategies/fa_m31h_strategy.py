@@ -11,9 +11,9 @@ class FrostAuraM31hStrategy(IStrategy):
     based on the BB, RSI and Stochastic.
     
     Last Optimization:
-        Profit %        : 1258.76%
-        Optimized for   : Last 60 days, 1h
-        Avg             : 2610.1m
+        Profit %        : 18.85% (Daily)
+        Optimized for   : Last 30 days, 1h
+        Avg             : 310.1m
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -21,14 +21,14 @@ class FrostAuraM31hStrategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.39112,
-        "355": 0.1281,
-        "510": 0.08743,
-        "1697": 0
+        "0": 0.48508,
+        "405": 0.09942,
+        "717": 0.02687,
+        "1806": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.35879
+    stoploss = -0.15689
 
     # Trailing stoploss
     trailing_stop = False
@@ -117,10 +117,10 @@ class FrostAuraM31hStrategy(IStrategy):
         
         dataframe.loc[
             (
-                (dataframe['slowd'] < 57) &
-                (dataframe['slowk'] > 55) &
-                (dataframe['rsi'] > 39) &
-                (dataframe["close"] < dataframe['bb_lowerband3']) &
+                (dataframe['slowd'] < 50) &
+                (dataframe['slowk'] < 58) &
+                (dataframe['rsi'] < 41) &
+                (dataframe["close"] < dataframe['bb_lowerband1']) &
                 (dataframe["close"] > minimum_coin_price)
             ),
             'buy'] = 1
@@ -130,10 +130,10 @@ class FrostAuraM31hStrategy(IStrategy):
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                (dataframe['slowd'] < 72) &
-                (dataframe['slowk'] > 50) &
-                (dataframe['rsi'] > 65) &
-                (dataframe["close"] < dataframe['bb_lowerband3'])
+                (dataframe['slowd'] > 31) &
+                (dataframe['slowk'] > 41) &
+                (dataframe['rsi'] > 33) &
+                (dataframe["close"] < dataframe['bb_lowerband1'])
             ),
             'sell'] = 1
         

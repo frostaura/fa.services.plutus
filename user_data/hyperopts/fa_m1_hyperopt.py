@@ -51,11 +51,11 @@ class FrostAuraM1HyperOpt(IHyperOpt):
             minimum_coin_price = 0.0000015
 
             # TRIGGERS
-            if 'rsi-direction' in params:
-                if params['rsi-direction'] == '>':
-                    conditions.append(dataframe['rsi'] > params['rsi-value'])
-                if params['rsi-direction'] == '<':
-                    conditions.append(dataframe['rsi'] < params['rsi-value'])
+            #if 'rsi-direction' in params:
+                #if params['rsi-direction'] == '>':
+                    #conditions.append(dataframe['rsi'] > params['rsi-value'])
+                #if params['rsi-direction'] == '<':
+            conditions.append(dataframe['rsi'] < params['rsi-value'])
                     
             if 'trigger' in params:
                 if params['trigger'] == 'bb_lower1':
@@ -82,7 +82,7 @@ class FrostAuraM1HyperOpt(IHyperOpt):
     def indicator_space() -> List[Dimension]:
         return [
             Integer(20, 80, name='rsi-value'),
-            Categorical(['>', '<'], name='rsi-direction'),
+            #Categorical(['>', '<'], name='rsi-direction'),
             Categorical(['bb_lower1', 'bb_lower2', 'bb_lower3', 'bb_lower4'], name='trigger')
         ]
 
@@ -92,11 +92,11 @@ class FrostAuraM1HyperOpt(IHyperOpt):
             conditions = []
 
             # TRIGGERS
-            if 'sell-rsi-direction' in params:
-                if params['sell-rsi-direction'] == '>':
-                    conditions.append(dataframe['rsi'] > params['sell-rsi-value'])
-                if params['sell-rsi-direction'] == '<':
-                    conditions.append(dataframe['rsi'] < params['sell-rsi-value'])
+            #if 'sell-rsi-direction' in params:
+                #if params['sell-rsi-direction'] == '>':
+            conditions.append(dataframe['rsi'] > params['sell-rsi-value'])
+                #if params['sell-rsi-direction'] == '<':
+                    #conditions.append(dataframe['rsi'] < params['sell-rsi-value'])
                     
             if 'sell-trigger' in params:
                 if params['sell-trigger'] == 'sell-bb_lower1':
@@ -119,6 +119,6 @@ class FrostAuraM1HyperOpt(IHyperOpt):
     def sell_indicator_space() -> List[Dimension]:
         return [
             Integer(20, 80, name='sell-rsi-value'),
-            Categorical(['>', '<'], name='sell-rsi-direction'),
+            #Categorical(['>', '<'], name='sell-rsi-direction'),
             Categorical(['sell-bb_lower1', 'sell-bb_middle1', 'sell-bb_upper1'], name='sell-trigger')
         ]

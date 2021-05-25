@@ -7,15 +7,15 @@ from freqtrade.strategy.interface import IStrategy
 import talib.abstract as ta
 import freqtrade.vendor.qtpylib.indicators as qtpylib
 
-class FrostAuraM51hStrategy(IStrategy):
+class FrostAuraM6Strategy(IStrategy):
     """
-    This is FrostAura's mark 5 strategy which aims to make purchase decisions
-    based on the ADX and RSI indicators. A momentum-based strategy.
+    This is FrostAura's mark 6 strategy which aims to make purchase decisions
+    based on the ADX and MACD indicators. A momentum-based strategy.
     
     Last Optimization:
-        Profit %        : 29.52% (Daily Avg)
+        Profit %        : 29.57% (Daily Avg)
         Optimized for   : Last 30 days, 1h
-        Avg             : 1678.6m
+        Avg             : 558.9m
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -24,15 +24,14 @@ class FrostAuraM51hStrategy(IStrategy):
     # Minimal ROI designed for the strategy.
     # This attribute will be overridden if the config file contains "minimal_roi".
     minimal_roi = {
-        "0": 0.33052,
-        "254": 0.13573,
-        "663": 0.07264,
-        "1943": 0
+        "60": 0.01,
+        "30": 0.02,
+        "0": 0.04
     }
 
     # Optimal stoploss designed for the strategy.
     # This attribute will be overridden if the config file contains "stoploss".
-    stoploss = -0.20269
+    stoploss = -0.10
 
     # Trailing stoploss
     trailing_stop = False
@@ -94,8 +93,11 @@ class FrostAuraM51hStrategy(IStrategy):
         # Minus Directional Indicator / Movement
         dataframe['minus_di'] = ta.MINUS_DI(dataframe)
 
-        # RSI
-        dataframe['rsi'] = ta.RSI(dataframe)
+        # MACD
+        macd = ta.MACD(dataframe)
+        dataframe['macd'] = macd['macd']
+        dataframe['macdsignal'] = macd['macdsignal']
+        dataframe['macdhist'] = macd['macdhist']
 
         return dataframe
 
@@ -104,8 +106,9 @@ class FrostAuraM51hStrategy(IStrategy):
         
         dataframe.loc[
             (
-                (dataframe['adx'] > 15) &
+                (dataframe['macd'] > 0) &
                 (dataframe['plus_di'] > dataframe['minus_di']) &
+                (dataframe['adx'] > 20) &
                 (dataframe["close"] > minimum_coin_price)
             ),
             'buy'] = 1
@@ -115,7 +118,8 @@ class FrostAuraM51hStrategy(IStrategy):
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                (dataframe['rsi'] < 65) &
+                (dataframe['macd'] < 0) &
+                (dataframe['minus_di'] > dataframe['plus_di']) &
                 (dataframe['adx'] < 20)
             ),
             'sell'] = 1

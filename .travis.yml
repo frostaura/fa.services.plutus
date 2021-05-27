@@ -1,7 +1,4 @@
-language: csharp
+language: minimal
 sudo: required
-mono: none
-dotnet: 3.1
-dist: xenial
 services:
   - docker

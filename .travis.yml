@@ -4,4 +4,7 @@ services:
   - docker
 before_install:
 - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-- docker-compose run --rm freqtrade download-data --exchange binance --days 30 -t 1h 4h
+jobs:
+  include:
+    - stage: Download Market Data
+      script: docker-compose run --rm freqtrade download-data --exchange binance --days 30 -t 1h 4h

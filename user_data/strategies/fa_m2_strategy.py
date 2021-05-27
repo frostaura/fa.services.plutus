@@ -5,7 +5,7 @@ from freqtrade.strategy.interface import IStrategy
 import talib.abstract as ta
 import freqtrade.vendor.qtpylib.indicators as qtpylib
 
-class FrostAuraM21hStrategy(IStrategy):
+class FrostAuraM2Strategy(IStrategy):
     """
     This is FrostAura's mark 2 strategy which aims to make purchase decisions
     based on the Stochastic and RSI.

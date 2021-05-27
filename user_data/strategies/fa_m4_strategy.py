@@ -5,13 +5,13 @@ from freqtrade.strategy.interface import IStrategy
 import talib.abstract as ta
 import freqtrade.vendor.qtpylib.indicators as qtpylib
 
-class FrostAuraM44hStrategy(IStrategy):
+class FrostAuraM4Strategy(IStrategy):
     """
     This is FrostAura's mark 4 stretagy with RSI and MACD.
     
     Last Optimization:
         Profit %        : 26.23% (Daily)
-        Optimized for   : Last 60 days, 4h
+        Optimized for   : Last 60 days, 1h
         Avg             : 2120.0m
     """
     # Strategy interface version - allow new iterations of the strategy interface.
@@ -33,7 +33,7 @@ class FrostAuraM44hStrategy(IStrategy):
     trailing_stop = False
 
     # Optimal ticker interval for the strategy.
-    timeframe = '4h'
+    timeframe = '1h'
 
     # Run "populate_indicators()" only for new candle.
     process_only_new_candles = False

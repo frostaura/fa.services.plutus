@@ -7,4 +7,4 @@ before_install:
 jobs:
   include:
     - stage: Download Market Data
-      script: docker-compose run --rm freqtrade download-data --exchange binance --days 30 -t 1h 4h
+      script: ./build/get-market-data.sh

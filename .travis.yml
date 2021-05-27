@@ -8,3 +8,5 @@ jobs:
   include:
     - stage: Download Market Data
       script: ./build/get-market-data.sh
+    - stage: Optimize Strategies
+      script: ./build/optimize-strategies.sh -e 100

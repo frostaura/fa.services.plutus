@@ -6,7 +6,5 @@ before_install:
 - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 jobs:
   include:
-    - stage: Download Market Data
-      script: ./build/get-market-data.sh
-    - stage: Optimize Strategies
-      script: ./build/optimize-strategies.sh -e 10 -d "$TRAVIS_BUILD_DIR/user_data/strategies"
+    - stage: Build
+      script: ./build/get-market-data.sh -e 10 -d "$TRAVIS_BUILD_DIR/user_data/strategies"

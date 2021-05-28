@@ -1,15 +1,18 @@
 !/bin/sh
 
-while getopts e: flag
+while getopts e:d: flag
 do
     case "${flag}" in
         e) epochs=${OPTARG};;
+        # Should be '../user_data/strategies' for local testing.
+        d) stratDir=${OPTARG};;
     esac
 done
 
 echo "Initialing hyperopts for all strategies with $epochs epochs."
+echo "Reading strategies from $stratDir."
 
-for FILE in ../user_data/strategies/*;
+for FILE in `ls ${stratDir}/*`;
 do 
     # Get file path name and content.
     filePath=$FILE

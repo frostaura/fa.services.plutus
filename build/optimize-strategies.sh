@@ -24,7 +24,7 @@ do
     # Only process optimizations for strategies that matches our strict naming standards and gracefully ignore the rest.
     if [ "$mark" ]; then
         echo "Optimizing Mark $mark"
-        #docker-compose run --rm freqtrade hyperopt --config user_data/config.json -e $epochs --strategy FrostAuraM${mark}Strategy --hyperopt FrostAuraM${mark}HyperOpt --hyperopt-loss OnlyProfitHyperOptLoss -i 1h
+        docker-compose run --rm freqtrade hyperopt --config user_data/config.json -e $epochs --strategy FrostAuraM${mark}Strategy --hyperopt FrostAuraM${mark}HyperOpt --hyperopt-loss OnlyProfitHyperOptLoss -i 1h
         
         # TODO: Make the below its own script.
         #   Read latest hyperopts results

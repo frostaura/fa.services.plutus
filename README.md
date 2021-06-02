@@ -24,7 +24,7 @@ Automated builds are set up for Docker Hub. To use this service without the sour
                     --logfile /freqtrade/user_data/logs/freqtrade.log
                     --db-url sqlite:////freqtrade/user_data/tradesv3.sqlite
                     --config /freqtrade/user_data/config.json
-                    --strategy FrostAuraM11hStrategy
+                    --strategy FrostAuraM1Strategy
 #### Custom Commands
 ##### Download Historical Market Data
 Download historical market data for the configured pairs in the config.json file. This data can in turn be used to run backtesting and/or optimizations.

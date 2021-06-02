@@ -45,6 +45,7 @@ This allows for testing a given strategy against downloaded market data. See the
 - Install Docker Desktop from here: https://www.docker.com/products/docker-desktop
 - After installation, ensure that if you're on windows, you switch docker from windows containers to linux containers. This can be done via the Docker icon in the system tray.
 #### Configuration
+- Download the repo as a zip and extract it.
 - Navigate to 'user_data' directory and open up 'config.json'.
 - Configure 'dryrun mode'
   - True = run with fake money.
@@ -63,7 +64,7 @@ This allows for testing a given strategy against downloaded market data. See the
   - Type 'docker-compose up' to run it in the terminal window (the bot will stop running once you close this window).
 - Running Multiple Strategies at Once
   - Simple Duplicate the entire folder with all the bot files (docker-compose.yml, user_data etc), for as many strategies you want to run.
-  - Repeat the above configuration and running steps for each of those directories in seperate terminal windows.
+  - Repeat the above configuration and running steps for each of those directories in seperate terminal windows. (Your exchange information would be the same for all bots. Your Telegram bot id should be different for all strategies).
   - Remeber to adjust your stakes according to how many strategies you will be running concurrently. (Example, We allow 15 transactions by default for a given strategy (as seen in the config file) so you want to take your total BTC holdings and / ( 15 * how many strategies you plan to run) = stake )
 ### Customization
 #### Strategies

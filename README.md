@@ -47,7 +47,7 @@ This allows for testing a given strategy against downloaded market data. See the
 #### Configuration
 - Download the repo as a zip and extract it.
 - Navigate to 'user_data' directory and open up 'config.json'.
-- Configure 'dryrun mode'
+- Configure 'dryrun mode' (NOTE: If you switch between dryrun true and false, always delete the 'tradesv3.sqlite' file before restarting the bot.)
   - True = run with fake money.
   - False = run with real money. (For this, the Binance configuration is required.)
 - Configure the stakes per transaction.

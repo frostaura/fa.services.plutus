@@ -8,4 +8,4 @@ before_install:
 jobs:
   include:
     - stage: Build
-      script: ./build/get-market-data.sh -e 10 -d "$TRAVIS_BUILD_DIR/user_data/strategies"
+      script: ./build/build.sh -e 10 -d "$TRAVIS_BUILD_DIR"

@@ -1,16 +1,32 @@
-!/bin/sh
+#!/usr/bin/env bash
 
 while getopts e:d: flag
 do
     case "${flag}" in
         e) epochs=${OPTARG};;
-        # Should be '../user_data/strategies' for local testing.
-        d) stratDir=${OPTARG};;
+        d) baseDir=${OPTARG};;
     esac
 done
 
-echo "Initialing hyperopts for all strategies with $epochs epochs."
-echo "Reading strategies from $stratDir."
+stratDir="${baseDir}/user_data/strategies"
+
+echo "[OPTIMIZE][STRATEGIES][EPOCHS][$epochs]"
+echo "[OPTIMIZE][STRATEGIES][LOAD][$stratDir]"
+
+function split_string() {
+    str=$1
+    delimiter=$2
+    s=$str$delimiter
+    array=()
+
+    while [[ $s ]];
+    do
+        array+=("${s%%"$delimiter"*}");
+        s=${s#*"$delimiter"};
+    done;
+
+    declare -p array
+}
 
 for FILE in `ls ${stratDir}/*`;
 do 
@@ -26,15 +42,11 @@ do
 
     # Only process optimizations for strategies that matches our strict naming standards and gracefully ignore the rest.
     if [ "$mark" ]; then
-        echo "Optimizing Mark $mark"
-        docker-compose run --rm freqtrade hyperopt --config user_data/config.json -e $epochs --strategy FrostAuraM${mark}Strategy --hyperopt FrostAuraM${mark}HyperOpt --hyperopt-loss OnlyProfitHyperOptLoss -i 1h
-        
-        # TODO: Make the below its own script.
-        #   Read latest hyperopts results
-        #       Calculate daily average
-        #       Get average transaction time
-        #       Get new ROI, stoploss, buy and sell parameters.
-        #   Persist the above to the strategy file.
+        echo "[OPTIMIZE][STRATEGIES][MARK][$mark]"
+
+        str=$(docker-compose run --rm freqtrade hyperopt --config user_data/config.json -e $epochs --strategy FrostAuraM${mark}Strategy --hyperopt FrostAuraM${mark}HyperOpt --hyperopt-loss OnlyProfitHyperOptLoss -i 1h)
+        delimiter="Best result:"
+        split_string "$str" "$delimiter"
+        eval "${baseDir}/build/interpolate-optimized-values.sh -m \"$mark\" -f \"$filePath\" -r \"${array[1]}\" -d \"$baseDir\""
     fi
 done
-# Push to git with a tag of 'optimized'.

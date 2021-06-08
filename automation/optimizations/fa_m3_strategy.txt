@@ -1,0 +1,37 @@
+
+
+*    1/1:    232 trades. 123/13/96 Wins/Draws/Losses. Avg profit  -0.57%. Median profit   0.23%. Total profit -0.00264410 BTC (-132.07Σ%). Avg duration 828.6 min. Objective: 1.44023
+
+
+    # Buy hyperspace params:
+    buy_params = {
+        'rsi-direction': '<',
+        'rsi-value': 41,
+        'stoch-value-d': 40,
+        'stoch-value-d-direction': '>',
+        'stoch-value-k': 51,
+        'stoch-value-k-direction': '>',
+        'trigger': 'bb_lower4'
+    }
+
+    # Sell hyperspace params:
+    sell_params = {
+        'sell-rsi-direction': '>',
+        'sell-rsi-value': 39,
+        'sell-stoch-value-d': 69,
+        'sell-stoch-value-d-direction': '>',
+        'sell-stoch-value-k': 52,
+        'sell-stoch-value-k-direction': '>',
+        'sell-trigger': 'bb_lower2'
+    }
+
+    # ROI table:
+    minimal_roi = {
+        0: 0.47148,
+        371: 0.07169,
+        1007: 0.0365,
+        1389: 0
+    }
+
+    # Stoploss:
+    stoploss = -0.49258

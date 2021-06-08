@@ -9,6 +9,6 @@ do
 done
 
 echo "[BUILD]"
-#eval "${baseDir}/build/get-market-data.sh -e $epochs -d \"$baseDir\""
+eval "${baseDir}/build/get-market-data.sh -e $epochs -d \"$baseDir\""
 eval "${baseDir}/build/optimize-strategies.sh -e $epochs -d \"$baseDir\""
-#eval "${baseDir}/build/commit-optimizations.sh -d \"$baseDir\""
+eval "${baseDir}/build/commit-optimizations.sh -d \"$baseDir\""

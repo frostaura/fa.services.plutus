@@ -1,27 +1,27 @@
 
 
-    53/75:    986 trades. 702/5/279 Wins/Draws/Losses. Avg profit   0.44%. Median profit   0.75%. Total profit  0.00876554 BTC (  21.91Σ%). Avg duration 9:24:00 min. Objective: -0.45950
+    46/50:    975 trades. 663/0/312 Wins/Draws/Losses. Avg profit   0.13%. Median profit   0.66%. Total profit  0.00263159 BTC (   6.58Σ%). Avg duration 9:33:00 min. Objective: 0.56182
 
 
     # Buy hyperspace params:
     buy_params = {
-        rsi-value: 47,
+        rsi-value: 49,
         trigger: bb_lower1,
     }
 
     # Sell hyperspace params:
     sell_params = {
-        sell-rsi-value: 45,
+        sell-rsi-value: 28,
         sell-trigger: sell-bb_middle1,
     }
 
     # ROI table:
     minimal_roi = {
-        0: 0.365,
-        153: 0.176,
-        772: 0.064,
-        1487: 0
+        0: 0.52,
+        335: 0.189,
+        979: 0.038,
+        2155: 0
     }
 
     # Stoploss:
-    stoploss = -0.1939
+    stoploss = -0.1459

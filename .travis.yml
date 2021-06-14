@@ -8,4 +8,4 @@ before_install:
 jobs:
   include:
     - stage: Build
-      script: ./build/build.sh -e 150 -d "$TRAVIS_BUILD_DIR" -t "$GithubToken"
+      script: ./build/build.sh -e 65 -d "$TRAVIS_BUILD_DIR" -t "$GithubToken"

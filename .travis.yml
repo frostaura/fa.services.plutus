@@ -9,4 +9,4 @@ jobs:
   include:
     - stage: Build
       script: 
-        - travis_wait 90 ./build/build.sh -e 50 -d "$TRAVIS_BUILD_DIR" -t "$GithubToken"
+        - travis_wait 90 ./build/build.sh -e 65 -d "$TRAVIS_BUILD_DIR" -t "$GithubToken"

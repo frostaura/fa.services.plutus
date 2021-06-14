@@ -1,25 +1,25 @@
 
 
-   228/250:     70 trades. 45/2/23 Wins/Draws/Losses. Avg profit   0.49%. Median profit   6.31%. Total profit  0.00068968 BTC (  34.45Σ%). Avg duration 818.6 min. Objective: 0.88518
+    99/150:     78 trades. 12/0/66 Wins/Draws/Losses. Avg profit  -0.45%. Median profit  -3.26%. Total profit -0.00070645 BTC ( -35.27Σ%). Avg duration 165.4 min. Objective: 1.11757
 
 
     # Buy hyperspace params:
     buy_params = {
-     'rsi-value': 85, 'slowd-value': 44, 'slowk-value': 42
+     'rsi-value': 85, 'slowd-value': 27, 'slowk-value': 44
     }
 
     # Sell hyperspace params:
     sell_params = {
-     'sell-rsi-value': 46, 'sell-slowd-value': 74, 'sell-slowk-value': 63
+     'sell-rsi-value': 45, 'sell-slowd-value': 67, 'sell-slowk-value': 80
     }
 
     # ROI table:
     minimal_roi = {
-        0: 0.22623,
-        278: 0.06319,
-        805: 0.03483,
-        1388: 0
+        0: 0.19138,
+        445: 0.16512,
+        907: 0.07179,
+        1295: 0
     }
 
     # Stoploss:
-    stoploss = -0.49078
+    stoploss = -0.0307

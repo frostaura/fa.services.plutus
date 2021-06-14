@@ -44,7 +44,7 @@ do
     if [ "$mark" ]; then
         echo "[OPTIMIZE][STRATEGIES][MARK][$mark]"
 
-        str=$(docker-compose run --rm freqtrade hyperopt --config user_data/config.json -e $epochs --strategy FrostAuraM${mark}Strategy --hyperopt FrostAuraM${mark}HyperOpt --hyperopt-loss OnlyProfitHyperOptLoss -i 1h)
+        str=$(docker-compose run --rm freqtrade hyperopt --config user_data/config.json -e $epochs --strategy FrostAuraM${mark}Strategy --hyperopt FrostAuraM${mark}HyperOpt --hyperopt-loss SortinoHyperOptLossDaily -i 1h)
         delimiter="Best result:"
         split_string "$str" "$delimiter"
         eval "${baseDir}/build/interpolate-optimized-values.sh -m \"$mark\" -f \"$filePath\" -r \"${array[1]}\" -d \"$baseDir\""

@@ -21,14 +21,14 @@ class FrostAuraM1Strategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.52506,
-        "192": 0.15732,
-        "751": 0.02358,
-        "1593": 0
+        "0": 0.57769,
+        "479": 0.13613,
+        "679": 0.05694,
+        "1644": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.49532
+    stoploss = -0.35239
 
     # Trailing stoploss
     trailing_stop = False
@@ -109,22 +109,31 @@ class FrostAuraM1Strategy(IStrategy):
 
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         minimum_coin_price = 0.0000015
+        var_buy_rsi = 35
+        var_buy_band = 'upper'
+        var_buy_std = '4'
+        var_band_value = dataframe['bb_' + var_buy_band + 'band' + var_buy_std]
         
         dataframe.loc[
             (
-                (dataframe['rsi'] > 43) &
-                (dataframe["close"] < dataframe['bb_lowerband1']) &
-                (dataframe["close"] > minimum_coin_price)
+                (dataframe['rsi'] < var_buy_rsi) &
+                (dataframe['close'] < var_band_value) &
+                (dataframe['close'] > minimum_coin_price)
             ),
             'buy'] = 1
 
         return dataframe
 
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
+        var_sell_rsi = 42
+        var_sell_band = 'middle'
+        var_sell_std = '3'
+        var_sell_value = dataframe['bb_' + var_sell_band + 'band' + var_sell_std]
+        
         dataframe.loc[
             (
-                (dataframe['rsi'] < 51) &
-                (dataframe["close"] > dataframe['bb_middleband1'])
+                (dataframe['rsi'] > var_sell_rsi) &
+                (dataframe['close'] > var_sell_value)
             ),
             'sell'] = 1
         

@@ -49,9 +49,9 @@ class FrostAuraM1HyperOpt(IHyperOpt):
         def populate_buy_trend(dataframe: DataFrame, metadata: dict) -> DataFrame:
             conditions = []
             minimum_coin_price = 0.0000015
-            buy_frame_key = 'bb_' + params['band'] + 'band' + params['std']
+            buy_frame_key = 'bb_' + params['var_buy_band'] + 'band' + params['var_buy_std']
 
-            conditions.append(dataframe['rsi'] > params['rsi-value'])                  
+            conditions.append(dataframe['rsi'] < params['var_buy_rsi'])                  
             conditions.append(dataframe['close'] < dataframe[buy_frame_key])
             conditions.append(dataframe["close"] > minimum_coin_price)
 
@@ -67,18 +67,18 @@ class FrostAuraM1HyperOpt(IHyperOpt):
     @staticmethod
     def indicator_space() -> List[Dimension]:
         return [
-            Integer(20, 80, name='rsi-value'),
-            Categorical(['lower', 'middle', 'upper'], name='band'),
-            Categorical(['1', '2', '3', '4'], name='std')
+            Integer(20, 80, name='var_buy_rsi'),
+            Categorical(['lower', 'middle', 'upper'], name='var_buy_band'),
+            Categorical(['1', '2', '3', '4'], name='var_buy_std')
         ]
 
     @staticmethod
     def sell_strategy_generator(params: Dict[str, Any]) -> Callable:
         def populate_sell_trend(dataframe: DataFrame, metadata: dict) -> DataFrame:
             conditions = []
-            sell_frame_key = 'bb_' + params['band'] + 'band' + params['std']
+            sell_frame_key = 'bb_' + params['var_sell_band'] + 'band' + params['var_sell_std']
             
-            conditions.append(dataframe['rsi'] < params['sell-rsi-value'])
+            conditions.append(dataframe['rsi'] > params['var_sell_rsi'])
             conditions.append(dataframe['close'] > dataframe[sell_frame_key])
 
             if conditions:
@@ -93,7 +93,7 @@ class FrostAuraM1HyperOpt(IHyperOpt):
     @staticmethod
     def sell_indicator_space() -> List[Dimension]:
         return [
-            Integer(20, 80, name='sell-rsi-value'),
-            Categorical(['lower', 'middle', 'upper'], name='sell-band'),
-            Categorical(['1', '2', '3', '4'], name='sell-std')
+            Integer(20, 80, name='var_sell_rsi'),
+            Categorical(['lower', 'middle', 'upper'], name='var_sell_band'),
+            Categorical(['1', '2', '3', '4'], name='var_sell_std')
         ]

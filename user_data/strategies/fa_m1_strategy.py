@@ -112,7 +112,7 @@ class FrostAuraM1Strategy(IStrategy):
         
         dataframe.loc[
             (
-                (dataframe['rsi'] < 43) &
+                (dataframe['rsi'] > 43) &
                 (dataframe["close"] < dataframe['bb_lowerband1']) &
                 (dataframe["close"] > minimum_coin_price)
             ),
@@ -123,7 +123,7 @@ class FrostAuraM1Strategy(IStrategy):
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                (dataframe['rsi'] > 51) &
+                (dataframe['rsi'] < 51) &
                 (dataframe["close"] > dataframe['bb_middleband1'])
             ),
             'sell'] = 1

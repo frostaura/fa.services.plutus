@@ -51,7 +51,7 @@ class FrostAuraM1HyperOpt(IHyperOpt):
             minimum_coin_price = 0.0000015
             buy_frame_key = 'bb_' + params['band'] + 'band' + params['std']
 
-            conditions.append(dataframe['rsi'] < params['rsi-value'])                  
+            conditions.append(dataframe['rsi'] > params['rsi-value'])                  
             conditions.append(dataframe['close'] < dataframe[buy_frame_key])
             conditions.append(dataframe["close"] > minimum_coin_price)
 
@@ -78,7 +78,7 @@ class FrostAuraM1HyperOpt(IHyperOpt):
             conditions = []
             sell_frame_key = 'bb_' + params['band'] + 'band' + params['std']
             
-            conditions.append(dataframe['rsi'] > params['sell-rsi-value'])
+            conditions.append(dataframe['rsi'] < params['sell-rsi-value'])
             conditions.append(dataframe['close'] > dataframe[sell_frame_key])
 
             if conditions:

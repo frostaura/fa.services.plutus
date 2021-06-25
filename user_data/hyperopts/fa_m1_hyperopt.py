@@ -49,24 +49,10 @@ class FrostAuraM1HyperOpt(IHyperOpt):
         def populate_buy_trend(dataframe: DataFrame, metadata: dict) -> DataFrame:
             conditions = []
             minimum_coin_price = 0.0000015
+            buy_frame_key = 'bb_' + params['band'] + 'band' + params['std']
 
-            # TRIGGERS
-            #if 'rsi-direction' in params:
-                #if params['rsi-direction'] == '>':
-                    #conditions.append(dataframe['rsi'] > params['rsi-value'])
-                #if params['rsi-direction'] == '<':
-            conditions.append(dataframe['rsi'] < params['rsi-value'])
-                    
-            if 'trigger' in params:
-                if params['trigger'] == 'bb_lower1':
-                    conditions.append(dataframe['close'] < dataframe['bb_lowerband1'])
-                if params['trigger'] == 'bb_lower2':
-                    conditions.append(dataframe['close'] < dataframe['bb_lowerband2'])
-                if params['trigger'] == 'bb_lower3':
-                    conditions.append(dataframe['close'] < dataframe['bb_lowerband3'])
-                if params['trigger'] == 'bb_lower4':
-                    conditions.append(dataframe['close'] < dataframe['bb_lowerband4'])
-
+            conditions.append(dataframe['rsi'] < params['rsi-value'])                  
+            conditions.append(dataframe['close'] < dataframe[buy_frame_key])
             conditions.append(dataframe["close"] > minimum_coin_price)
 
             if conditions:
@@ -82,29 +68,18 @@ class FrostAuraM1HyperOpt(IHyperOpt):
     def indicator_space() -> List[Dimension]:
         return [
             Integer(20, 80, name='rsi-value'),
-            #Categorical(['>', '<'], name='rsi-direction'),
-            Categorical(['bb_lower1', 'bb_lower2', 'bb_lower3', 'bb_lower4'], name='trigger')
+            Categorical(['lower', 'middle', 'upper'], name='band'),
+            Categorical(['1', '2', '3', '4'], name='std')
         ]
 
     @staticmethod
     def sell_strategy_generator(params: Dict[str, Any]) -> Callable:
         def populate_sell_trend(dataframe: DataFrame, metadata: dict) -> DataFrame:
             conditions = []
-
-            # TRIGGERS
-            #if 'sell-rsi-direction' in params:
-                #if params['sell-rsi-direction'] == '>':
+            sell_frame_key = 'bb_' + params['band'] + 'band' + params['std']
+            
             conditions.append(dataframe['rsi'] > params['sell-rsi-value'])
-                #if params['sell-rsi-direction'] == '<':
-                    #conditions.append(dataframe['rsi'] < params['sell-rsi-value'])
-                    
-            if 'sell-trigger' in params:
-                if params['sell-trigger'] == 'sell-bb_lower1':
-                    conditions.append(dataframe['close'] > dataframe['bb_lowerband1'])
-                if params['sell-trigger'] == 'sell-bb_middle1':
-                    conditions.append(dataframe['close'] > dataframe['bb_middleband1'])
-                if params['sell-trigger'] == 'sell-bb_upper1':
-                    conditions.append(dataframe['close'] > dataframe['bb_upperband1'])
+            conditions.append(dataframe['close'] > dataframe[sell_frame_key])
 
             if conditions:
                 dataframe.loc[
@@ -119,6 +94,6 @@ class FrostAuraM1HyperOpt(IHyperOpt):
     def sell_indicator_space() -> List[Dimension]:
         return [
             Integer(20, 80, name='sell-rsi-value'),
-            #Categorical(['>', '<'], name='sell-rsi-direction'),
-            Categorical(['sell-bb_lower1', 'sell-bb_middle1', 'sell-bb_upper1'], name='sell-trigger')
+            Categorical(['lower', 'middle', 'upper'], name='sell-band'),
+            Categorical(['1', '2', '3', '4'], name='sell-std')
         ]

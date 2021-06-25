@@ -5,14 +5,15 @@ from freqtrade.strategy.interface import IStrategy
 import talib.abstract as ta
 import freqtrade.vendor.qtpylib.indicators as qtpylib
 
-class FrostAuraM4Strategy(IStrategy):
+class FrostAuraM8Strategy(IStrategy):
     """
-    This is FrostAura's mark 4 stretagy with RSI and MACD.
+    This is FrostAura's mark 8 strategy which aims to make purchase decisions
+    based on the RSI & overall performance of the asset from it's previous candlesticks.
     
     Last Optimization:
-        Profit %        : 71.54%
+        Profit %        : 84.69%
         Optimized for   : Last 30 days, 4h
-        Avg             : 3,655.4 m
+        Avg             : 160.0 m
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -20,14 +21,14 @@ class FrostAuraM4Strategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.70914,
-        "1008": 0.16924,
-        "1820": 0.1171,
-        "3394": 0
+        "0": 0.7218,
+        "758": 0.21619,
+        "1864": 0.07295,
+        "6108": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.38589
+    stoploss = -0.02059
 
     # Trailing stoploss
     trailing_stop = False
@@ -48,8 +49,8 @@ class FrostAuraM4Strategy(IStrategy):
 
     # Optional order type mapping.
     order_types = {
-        'buy': 'limit',
-        'sell': 'limit',
+        'buy': 'market',
+        'sell': 'market',
         'stoploss': 'market',
         'stoploss_on_exchange': False
     }
@@ -82,33 +83,34 @@ class FrostAuraM4Strategy(IStrategy):
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         # RSI
         dataframe['rsi'] = ta.RSI(dataframe)
-        
-        # MACD
-        macd = ta.MACD(dataframe)
-        dataframe['macd'] = macd['macd']
-        dataframe['macdsignal'] = macd['macdsignal']
-        dataframe['macdhist'] = macd['macdhist']
 
         return dataframe
 
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
+        var_rsi = 88
         minimum_coin_price = 0.0000015
-        
+
         dataframe.loc[
             (
-                (dataframe['rsi'] < 26) &
-                (dataframe['macd'] > dataframe['macdsignal']) &
-                (dataframe["close"] > minimum_coin_price)
+                (dataframe['rsi'] > var_rsi) &
+                (dataframe['close'] > minimum_coin_price)
             ),
             'buy'] = 1
 
         return dataframe
 
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
+        var_sell_rsi = 37
+        var_sell_percentage = 23
+        
+        previous_close = dataframe['close'].shift(1)
+        current_close = dataframe['close']
+        percentage_price_delta = ((previous_close - current_close) / previous_close) * -100
+        
         dataframe.loc[
             (
-                (dataframe['rsi'] > 79) &
-                (dataframe['macd'] < dataframe['macdsignal'])
+                (dataframe['rsi'] < var_sell_rsi) |
+                (percentage_price_delta > var_sell_percentage)
             ),
             'sell'] = 1
         

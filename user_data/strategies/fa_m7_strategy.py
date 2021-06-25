@@ -24,15 +24,15 @@ class FrostAuraM7Strategy(IStrategy):
     # Minimal ROI designed for the strategy.
     # This attribute will be overridden if the config file contains "minimal_roi".
     minimal_roi = {
-        "0": 0.35595,
-        "399": 0.17132,
-        "756": 0.08443,
-        "1095": 0
+        "0": 0.55136,
+        "436": 0.09797,
+        "729": 0.0424,
+        "1988": 0
     }
 
     # Optimal stoploss designed for the strategy.
     # This attribute will be overridden if the config file contains "stoploss".
-    stoploss = -0.48422
+    stoploss = -0.10944
 
     # Trailing stoploss
     trailing_stop = False
@@ -102,9 +102,9 @@ class FrostAuraM7Strategy(IStrategy):
         
         dataframe.loc[
             (
-                (dataframe['macd'] > -14) &
-                (dataframe['rsi'] > 29) &
-                (dataframe['adx'] > 41) &
+                (dataframe['macd'] > -16) &
+                (dataframe['rsi'] > 23) &
+                (dataframe['adx'] > 40) &
                 (dataframe["close"] > minimum_coin_price)
             ),
             'buy'] = 1
@@ -114,9 +114,9 @@ class FrostAuraM7Strategy(IStrategy):
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                (dataframe['macd'] < -13) &
-                (dataframe['rsi'] < 56) &
-                (dataframe['adx'] < 9)
+                (dataframe['macd'] < 5) &
+                (dataframe['rsi'] < 63) &
+                (dataframe['adx'] < 15)
             ),
             'sell'] = 1
         return dataframe

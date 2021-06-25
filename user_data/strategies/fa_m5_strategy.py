@@ -13,9 +13,9 @@ class FrostAuraM5Strategy(IStrategy):
     based on the ADX and RSI indicators. A momentum-based strategy.
     
     Last Optimization:
-        Profit %        : 29.52% (Daily Avg)
+        Profit %        : 27.08%
         Optimized for   : Last 30 days, 1h
-        Avg             : 1678.6m
+        Avg             : 1,998.0 m
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -24,15 +24,15 @@ class FrostAuraM5Strategy(IStrategy):
     # Minimal ROI designed for the strategy.
     # This attribute will be overridden if the config file contains "minimal_roi".
     minimal_roi = {
-        "0": 0.33052,
-        "254": 0.13573,
-        "663": 0.07264,
-        "1943": 0
+        "0": 0.3892,
+        "231": 0.06687,
+        "512": 0.03621,
+        "1350": 0
     }
 
     # Optimal stoploss designed for the strategy.
     # This attribute will be overridden if the config file contains "stoploss".
-    stoploss = -0.20269
+    stoploss = -0.20651
 
     # Trailing stoploss
     trailing_stop = False
@@ -104,7 +104,7 @@ class FrostAuraM5Strategy(IStrategy):
         
         dataframe.loc[
             (
-                (dataframe['adx'] > 15) &
+                (dataframe['adx'] > 35) &
                 (dataframe['plus_di'] > dataframe['minus_di']) &
                 (dataframe["close"] > minimum_coin_price)
             ),
@@ -115,8 +115,8 @@ class FrostAuraM5Strategy(IStrategy):
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                (dataframe['rsi'] < 65) &
-                (dataframe['adx'] < 20)
+                (dataframe['rsi'] < 57) &
+                (dataframe['adx'] < 5)
             ),
             'sell'] = 1
         return dataframe

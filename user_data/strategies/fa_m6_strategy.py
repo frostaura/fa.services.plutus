@@ -13,9 +13,9 @@ class FrostAuraM6Strategy(IStrategy):
     based on the ADX and MACD indicators. A momentum-based strategy.
     
     Last Optimization:
-        Profit %        : 29.57% (Daily Avg)
+        Profit %        : -14.25%
         Optimized for   : Last 30 days, 1h
-        Avg             : 558.9m
+        Avg             : 990.0 m
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -24,14 +24,15 @@ class FrostAuraM6Strategy(IStrategy):
     # Minimal ROI designed for the strategy.
     # This attribute will be overridden if the config file contains "minimal_roi".
     minimal_roi = {
-        "60": 0.01,
-        "30": 0.02,
-        "0": 0.04
+        "0": 0.28197,
+        "196": 0.16291,
+        "343": 0.04476,
+        "1586": 0
     }
 
     # Optimal stoploss designed for the strategy.
     # This attribute will be overridden if the config file contains "stoploss".
-    stoploss = -0.10
+    stoploss = -0.33028
 
     # Trailing stoploss
     trailing_stop = False
@@ -106,9 +107,9 @@ class FrostAuraM6Strategy(IStrategy):
         
         dataframe.loc[
             (
-                (dataframe['macd'] > 0) &
+                (dataframe['macd'] > -14) &
                 (dataframe['plus_di'] > dataframe['minus_di']) &
-                (dataframe['adx'] > 20) &
+                (dataframe['adx'] > 33) &
                 (dataframe["close"] > minimum_coin_price)
             ),
             'buy'] = 1
@@ -120,7 +121,7 @@ class FrostAuraM6Strategy(IStrategy):
             (
                 (dataframe['macd'] < 0) &
                 (dataframe['minus_di'] > dataframe['plus_di']) &
-                (dataframe['adx'] < 20)
+                (dataframe['adx'] < 26)
             ),
             'sell'] = 1
         return dataframe

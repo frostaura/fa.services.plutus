@@ -11,9 +11,9 @@ class FrostAuraM3Strategy(IStrategy):
     based on the BB, RSI and Stochastic.
     
     Last Optimization:
-        Profit %        : 18.85% (Daily)
+        Profit %        : 17.36%
         Optimized for   : Last 30 days, 1h
-        Avg             : 310.1m
+        Avg             : 2 700.0m
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -21,14 +21,14 @@ class FrostAuraM3Strategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.48508,
-        "405": 0.09942,
-        "717": 0.02687,
-        "1806": 0
+        "0": 0.56624,
+        "284": 0.19551,
+        "787": 0.04409,
+        "1924": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.15689
+    stoploss = -0.14945
 
     # Trailing stoploss
     trailing_stop = False
@@ -117,10 +117,10 @@ class FrostAuraM3Strategy(IStrategy):
         
         dataframe.loc[
             (
-                (dataframe['slowd'] < 50) &
-                (dataframe['slowk'] < 58) &
-                (dataframe['rsi'] < 41) &
-                (dataframe["close"] < dataframe['bb_lowerband1']) &
+                (dataframe['slowd'] < 37) &
+                (dataframe['slowk'] < 49) &
+                (dataframe['rsi'] > 55) &
+                (dataframe["close"] < dataframe['bb_lowerband3']) &
                 (dataframe["close"] > minimum_coin_price)
             ),
             'buy'] = 1
@@ -130,10 +130,10 @@ class FrostAuraM3Strategy(IStrategy):
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                (dataframe['slowd'] > 31) &
-                (dataframe['slowk'] > 41) &
-                (dataframe['rsi'] > 33) &
-                (dataframe["close"] < dataframe['bb_lowerband1'])
+                (dataframe['slowd'] < 23) &
+                (dataframe['slowk'] < 70) &
+                (dataframe['rsi'] > 76) &
+                (dataframe["close"] < dataframe['bb_lowerband3'])
             ),
             'sell'] = 1
         

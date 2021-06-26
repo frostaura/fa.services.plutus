@@ -10,9 +10,10 @@ class FrostAuraM4Strategy(IStrategy):
     This is FrostAura's mark 4 stretagy with RSI and MACD.
     
     Last Optimization:
-        Profit %        : 71.54%
+        Profit %        : 31.60%
         Optimized for   : Last 30 days, 4h
-        Avg             : 3,655.4 m
+        Avg             : 3,032.7 m
+        Obj             : -20,138.69916
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -96,7 +97,7 @@ class FrostAuraM4Strategy(IStrategy):
         
         dataframe.loc[
             (
-                (dataframe['rsi'] < 26) &
+                (dataframe['rsi'] < 25) &
                 (dataframe['macd'] > dataframe['macdsignal']) &
                 (dataframe["close"] > minimum_coin_price)
             ),
@@ -107,8 +108,8 @@ class FrostAuraM4Strategy(IStrategy):
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                (dataframe['rsi'] > 79) &
-                (dataframe['macd'] < dataframe['macdsignal'])
+                (dataframe['rsi'] > 65) &
+                (dataframe['macd'] > dataframe['macdsignal'])
             ),
             'sell'] = 1
         

@@ -34,12 +34,7 @@ class FrostAuraM4HyperOpt(IHyperOpt):
             conditions = []
             minimum_coin_price = 0.0000015
             
-            # TRIGGERS
-            if 'rsi-direction' in params:
-                if params['rsi-direction'] == '>':
-                    conditions.append(dataframe['rsi'] > params['rsi-value'])
-                if params['rsi-direction'] == '<':
-                    conditions.append(dataframe['rsi'] < params['rsi-value'])
+            conditions.append(dataframe['rsi'] < params['rsi-value'])
                     
             if 'macd-direction' in params:
                 if params['macd-direction'] == '>':
@@ -61,8 +56,7 @@ class FrostAuraM4HyperOpt(IHyperOpt):
     @staticmethod
     def indicator_space() -> List[Dimension]:
         return [
-            Integer(20, 80, name='rsi-value'),
-            Categorical(['>', '<'], name='rsi-direction'),
+            Integer(10, 40, name='rsi-value'),
             Categorical(['>', '<'], name='macd-direction')
         ]
 
@@ -71,12 +65,7 @@ class FrostAuraM4HyperOpt(IHyperOpt):
         def populate_sell_trend(dataframe: DataFrame, metadata: dict) -> DataFrame:
             conditions = []
 
-            # TRIGGERS
-            if 'sell-rsi-direction' in params:
-                if params['sell-rsi-direction'] == '>':
-                    conditions.append(dataframe['rsi'] > params['sell-rsi-value'])
-                if params['sell-rsi-direction'] == '<':
-                    conditions.append(dataframe['rsi'] < params['sell-rsi-value'])
+            conditions.append(dataframe['rsi'] > params['sell-rsi-value'])
                     
             if 'sell-macd-direction' in params:
                 if params['sell-macd-direction'] == '>':
@@ -96,7 +85,7 @@ class FrostAuraM4HyperOpt(IHyperOpt):
     @staticmethod
     def sell_indicator_space() -> List[Dimension]:
         return [
-            Integer(20, 80, name='sell-rsi-value'),
+            Integer(50, 80, name='sell-rsi-value'),
             Categorical(['>', '<'], name='sell-rsi-direction'),
             Categorical(['>', '<'], name='sell-macd-direction')
         ]

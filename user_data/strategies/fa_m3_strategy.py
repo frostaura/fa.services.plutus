@@ -11,9 +11,9 @@ class FrostAuraM3Strategy(IStrategy):
     based on the BB, RSI and Stochastic.
     
     Last Optimization:
-        Profit %        : 17.36%
+        Profit %        : 78.56%
         Optimized for   : Last 30 days, 1h
-        Avg             : 2 700.0m
+        Avg             : 408.2 m
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -21,14 +21,14 @@ class FrostAuraM3Strategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.56624,
-        "284": 0.19551,
-        "787": 0.04409,
-        "1924": 0
+        "0": 0.30454,
+        "140": 0.18429,
+        "761": 0.05257,
+        "2143": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.14945
+    stoploss = -0.45047
 
     # Trailing stoploss
     trailing_stop = False
@@ -114,13 +114,19 @@ class FrostAuraM3Strategy(IStrategy):
 
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         minimum_coin_price = 0.0000015
+        var_buy_rsi = 20
+        var_buy_band = 'lower'
+        var_buy_std = '1'
+        var_buy_band_value = dataframe['bb_' + var_buy_band + 'band' + var_buy_std]
+        var_buy_slowd = 71
+        var_buy_slowk = 20
         
         dataframe.loc[
             (
-                (dataframe['slowd'] < 37) &
-                (dataframe['slowk'] < 49) &
-                (dataframe['rsi'] > 55) &
-                (dataframe["close"] < dataframe['bb_lowerband3']) &
+                (dataframe['slowd'] < var_buy_slowd) &
+                (dataframe['slowk'] < var_buy_slowk) &
+                (dataframe['rsi'] < var_buy_rsi) &
+                (dataframe["close"] < var_buy_band_value) &
                 (dataframe["close"] > minimum_coin_price)
             ),
             'buy'] = 1
@@ -128,12 +134,19 @@ class FrostAuraM3Strategy(IStrategy):
         return dataframe
 
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
+        var_sell_rsi = 25
+        var_sell_band = 'upper'
+        var_sell_std = '1'
+        var_sell_band_value = dataframe['bb_' + var_sell_band + 'band' + var_sell_std]
+        var_sell_slowd = 41
+        var_sell_slowk = 41
+        
         dataframe.loc[
             (
-                (dataframe['slowd'] < 23) &
-                (dataframe['slowk'] < 70) &
-                (dataframe['rsi'] > 76) &
-                (dataframe["close"] < dataframe['bb_lowerband3'])
+                (dataframe['slowd'] > var_sell_slowd) &
+                (dataframe['slowk'] > var_sell_slowk) &
+                (dataframe['rsi'] > var_sell_rsi) &
+                (dataframe["close"] < var_sell_band_value)
             ),
             'sell'] = 1
         

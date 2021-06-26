@@ -11,9 +11,10 @@ class FrostAuraM3Strategy(IStrategy):
     based on the BB, RSI and Stochastic.
     
     Last Optimization:
-        Profit %        : 78.56%
+        Profit %        : 67.58%
         Optimized for   : Last 30 days, 1h
-        Avg             : 408.2 m
+        Avg             : 811.0 m
+        Obj             : -1.02323
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -21,14 +22,14 @@ class FrostAuraM3Strategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.30454,
-        "140": 0.18429,
-        "761": 0.05257,
-        "2143": 0
+        "0": 0.09466,
+        "128": 0.0675,
+        "262": 0.03632,
+        "777": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.45047
+    stoploss = -0.16647
 
     # Trailing stoploss
     trailing_stop = False
@@ -114,12 +115,12 @@ class FrostAuraM3Strategy(IStrategy):
 
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         minimum_coin_price = 0.0000015
-        var_buy_rsi = 20
+        var_buy_rsi = 45
         var_buy_band = 'lower'
         var_buy_std = '1'
         var_buy_band_value = dataframe['bb_' + var_buy_band + 'band' + var_buy_std]
-        var_buy_slowd = 71
-        var_buy_slowk = 20
+        var_buy_slowd = 28
+        var_buy_slowk = 73
         
         dataframe.loc[
             (
@@ -134,12 +135,12 @@ class FrostAuraM3Strategy(IStrategy):
         return dataframe
 
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        var_sell_rsi = 25
+        var_sell_rsi = 48
         var_sell_band = 'upper'
-        var_sell_std = '1'
+        var_sell_std = '2'
         var_sell_band_value = dataframe['bb_' + var_sell_band + 'band' + var_sell_std]
-        var_sell_slowd = 41
-        var_sell_slowk = 41
+        var_sell_slowd = 36
+        var_sell_slowk = 26
         
         dataframe.loc[
             (

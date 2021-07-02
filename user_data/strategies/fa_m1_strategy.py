@@ -11,9 +11,10 @@ class FrostAuraM1Strategy(IStrategy):
     based on the BB and RSI.
     
     Last Optimization:
-        Profit %        : 128.06%
-        Optimized for   : Last 30 days, 1h
-        Avg             : 834.9 m
+        Profit %        : 259.02%
+        Optimized for   : Last 36 days, 1h
+        Avg             : 673.7 m
+        Obj             : -5.35664
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -21,14 +22,14 @@ class FrostAuraM1Strategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.59842,
-        "161": 0.19435,
-        "385": 0.05756,
-        "1153": 0
+        "0": 0.3743,
+        "162": 0.07256,
+        "571": 0.03893,
+        "1294": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.27325
+    stoploss = -0.43792
 
     # Trailing stoploss
     trailing_stop = False
@@ -109,9 +110,9 @@ class FrostAuraM1Strategy(IStrategy):
 
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         minimum_coin_price = 0.0000015
-        var_buy_rsi = 48
-        var_buy_band = 'lower'
-        var_buy_std = '1'
+        var_buy_rsi = 47
+        var_buy_band = 'upper'
+        var_buy_std = '2'
         var_band_value = dataframe['bb_' + var_buy_band + 'band' + var_buy_std]
         
         dataframe.loc[
@@ -125,9 +126,9 @@ class FrostAuraM1Strategy(IStrategy):
         return dataframe
 
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        var_sell_rsi = 51
-        var_sell_band = 'lower'
-        var_sell_std = '3'
+        var_sell_rsi = 49
+        var_sell_band = 'middle'
+        var_sell_std = '1'
         var_sell_value = dataframe['bb_' + var_sell_band + 'band' + var_sell_std]
         
         dataframe.loc[

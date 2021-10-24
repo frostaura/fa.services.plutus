@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from pandas import DataFrame
-from freqtrade.strategy.interface import IStrategy
+from freqtrade.strategy import (IntParameter, CategoricalParameter, IStrategy)
 import talib.abstract as ta
 import freqtrade.vendor.qtpylib.indicators as qtpylib
 
@@ -22,23 +22,24 @@ class FrostAuraM1Strategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.3743,
-        "162": 0.07256,
-        "571": 0.03893,
-        "1294": 0
+        "0": 0.404,
+        "412": 0.151,
+        "782": 0.086,
+        "1815": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.43792
+    # Stoploss:
+    stoploss = -0.28
 
-    # Trailing stoploss
-    trailing_stop = False
+    # Trailing stop:
+    trailing_stop = False  # value loaded from strategy
+    trailing_stop_positive = None  # value loaded from strategy
+    trailing_stop_positive_offset = 0.0  # value loaded from strategy
+    trailing_only_offset_is_reached = False  # value loaded from strategy
 
     # Optimal ticker interval for the strategy.
     timeframe = '1h'
-
-    # Run "populate_indicators()" only for new candle.
-    process_only_new_candles = False
 
     # These values can be overridden in the "ask_strategy" section in the config.
     use_sell_signal = True
@@ -108,11 +109,15 @@ class FrostAuraM1Strategy(IStrategy):
 
         return dataframe
 
+    buy_rsi = IntParameter([20, 80], default=26, space='buy')
+    buy_band = CategoricalParameter(['lower', 'middle', 'upper'], default='lower', space='buy')
+    buy_std = CategoricalParameter(['1', '2', '3', '4'], default='3', space='buy')
+
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         minimum_coin_price = 0.0000015
-        var_buy_rsi = 47
-        var_buy_band = 'upper'
-        var_buy_std = '2'
+        var_buy_rsi = self.buy_rsi.value
+        var_buy_band = self.buy_band.value
+        var_buy_std = self.buy_std.value
         var_band_value = dataframe['bb_' + var_buy_band + 'band' + var_buy_std]
         
         dataframe.loc[
@@ -125,10 +130,14 @@ class FrostAuraM1Strategy(IStrategy):
 
         return dataframe
 
+    sell_rsi = IntParameter([20, 80], default=76, space='sell')
+    sell_band = CategoricalParameter(['lower', 'middle', 'upper'], default='upper', space='sell')
+    sell_std = CategoricalParameter(['1', '2', '3', '4'], default='4', space='sell')
+
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        var_sell_rsi = 49
-        var_sell_band = 'middle'
-        var_sell_std = '1'
+        var_sell_rsi = self.sell_rsi.value
+        var_sell_band = self.sell_band.value
+        var_sell_std = self.sell_std.value
         var_sell_value = dataframe['bb_' + var_sell_band + 'band' + var_sell_std]
         
         dataframe.loc[

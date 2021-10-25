@@ -9,25 +9,25 @@
     },
     "buy": {
       "buy_band": "lower",
-      "buy_rsi": 26,
+      "buy_rsi": 25,
       "buy_std": "3"
     },
     "sell": {
       "sell_band": "upper",
-      "sell_rsi": 76,
-      "sell_std": "4"
+      "sell_rsi": 77,
+      "sell_std": "1"
     },
     "protection": {},
     "roi": {
-      "0": 0.404,
-      "412": 0.151,
-      "782": 0.086,
-      "1815": 0
+      "0": 0.27599999999999997,
+      "287": 0.23099999999999998,
+      "984": 0.087,
+      "2010": 0
     },
     "stoploss": {
-      "stoploss": -0.28
+      "stoploss": -0.254
     }
   },
   "ft_stratparam_v": 1,
-  "export_time": "2021-10-24 19:41:49.739527+00:00"
+  "export_time": "2021-10-25 13:43:27.535107+00:00"
 }

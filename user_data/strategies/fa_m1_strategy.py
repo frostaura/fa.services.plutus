@@ -1,5 +1,3 @@
-import numpy as np
-import pandas as pd
 from pandas import DataFrame
 from freqtrade.strategy import (IntParameter, CategoricalParameter, IStrategy)
 import talib.abstract as ta
@@ -11,10 +9,9 @@ class FrostAuraM1Strategy(IStrategy):
     based on the BB and RSI.
     
     Last Optimization:
-        Profit %        : 259.02%
-        Optimized for   : Last 36 days, 1h
-        Avg             : 673.7 m
-        Obj             : -5.35664
+        Profit %        : 4.89%
+        Optimized for   : Last 45 days, 1h
+        Avg             : 2d 7h 22m
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -22,15 +19,15 @@ class FrostAuraM1Strategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.404,
-        "412": 0.151,
-        "782": 0.086,
-        "1815": 0
+        "0": 0.276,
+        "287": 0.231,
+        "984": 0.087,
+        "2010": 0
     }
 
     # Optimal stoploss designed for the strategy.
     # Stoploss:
-    stoploss = -0.28
+    stoploss = -0.254
 
     # Trailing stop:
     trailing_stop = False  # value loaded from strategy
@@ -109,7 +106,7 @@ class FrostAuraM1Strategy(IStrategy):
 
         return dataframe
 
-    buy_rsi = IntParameter([20, 80], default=26, space='buy')
+    buy_rsi = IntParameter([20, 80], default=25, space='buy')
     buy_band = CategoricalParameter(['lower', 'middle', 'upper'], default='lower', space='buy')
     buy_std = CategoricalParameter(['1', '2', '3', '4'], default='3', space='buy')
 
@@ -130,9 +127,9 @@ class FrostAuraM1Strategy(IStrategy):
 
         return dataframe
 
-    sell_rsi = IntParameter([20, 80], default=76, space='sell')
+    sell_rsi = IntParameter([20, 80], default=77, space='sell')
     sell_band = CategoricalParameter(['lower', 'middle', 'upper'], default='upper', space='sell')
-    sell_std = CategoricalParameter(['1', '2', '3', '4'], default='4', space='sell')
+    sell_std = CategoricalParameter(['1', '2', '3', '4'], default='1', space='sell')
 
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         var_sell_rsi = self.sell_rsi.value

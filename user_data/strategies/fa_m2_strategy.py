@@ -1,9 +1,6 @@
-import numpy as np
-import pandas as pd
 from pandas import DataFrame
-from freqtrade.strategy.interface import IStrategy
+from freqtrade.strategy import (IntParameter, IStrategy)
 import talib.abstract as ta
-import freqtrade.vendor.qtpylib.indicators as qtpylib
 
 class FrostAuraM2Strategy(IStrategy):
     """
@@ -11,9 +8,9 @@ class FrostAuraM2Strategy(IStrategy):
     based on the Stochastic and RSI.
     
     Last Optimization:
-        Profit %        : 16.98%
-        Optimized for   : Last 30 days, 1h
-        Avg             : 4,753.6 m
+        Profit %        : 2.32%
+        Optimized for   : Last 45 days, 1h
+        Avg             : 5h 23m
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -21,17 +18,20 @@ class FrostAuraM2Strategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.45912,
-        "438": 0.19735,
-        "1035": 0.0375,
-        "2385": 0
+        "0": 0.52,
+        "120": 0.167,
+        "723": 0.044,
+        "1967": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.41238
+    stoploss = -0.048
 
-    # Trailing stoploss
-    trailing_stop = False
+    # Trailing stop:
+    trailing_stop = False  # value loaded from strategy
+    trailing_stop_positive = None  # value loaded from strategy
+    trailing_stop_positive_offset = 0.0  # value loaded from strategy
+    trailing_only_offset_is_reached = False  # value loaded from strategy
 
     # Optimal ticker interval for the strategy.
     timeframe = '1h'
@@ -91,26 +91,34 @@ class FrostAuraM2Strategy(IStrategy):
 
         return dataframe
 
+    buy_rsi = IntParameter([15, 80], default=80, space='buy')
+    buy_slowd = IntParameter([15, 45], default=42, space='buy')
+    buy_slowk = IntParameter([15, 45], default=30, space='buy')
+
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         minimum_coin_price = 0.0000015
         
         dataframe.loc[
             (
-                (dataframe['rsi'] > 61) &
-                (dataframe["slowd"] > 25) &
-                (dataframe["slowk"] > 17) &
+                (dataframe['rsi'] > self.buy_rsi.value) &
+                (dataframe["slowd"] > self.buy_slowd.value) &
+                (dataframe["slowk"] > self.buy_slowk.value) &
                 (dataframe["close"] > minimum_coin_price)
             ),
             'buy'] = 1
 
         return dataframe
 
+    sell_rsi = IntParameter([20, 80], default=76, space='sell')
+    sell_slowd = IntParameter([45, 80], default=48, space='sell')
+    sell_slowk = IntParameter([45, 80], default=58, space='sell')
+
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                (dataframe['rsi'] < 15) &
-                (dataframe["slowd"] < 63) &
-                (dataframe["slowk"] < 52)
+                (dataframe['rsi'] < self.sell_rsi.value) &
+                (dataframe["slowd"] < self.sell_slowd.value) &
+                (dataframe["slowk"] < self.sell_slowk.value)
             ),
             'sell'] = 1
         

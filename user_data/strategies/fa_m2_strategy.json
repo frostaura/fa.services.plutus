@@ -1,0 +1,33 @@
+{
+  "strategy_name": "FrostAuraM2Strategy",
+  "params": {
+    "trailing": {
+      "trailing_stop": false,
+      "trailing_stop_positive": null,
+      "trailing_stop_positive_offset": 0.0,
+      "trailing_only_offset_is_reached": false
+    },
+    "buy": {
+      "buy_rsi": 80,
+      "buy_slowd": 42,
+      "buy_slowk": 30
+    },
+    "sell": {
+      "sell_rsi": 76,
+      "sell_slowd": 48,
+      "sell_slowk": 58
+    },
+    "protection": {},
+    "roi": {
+      "0": 0.52,
+      "120": 0.16699999999999998,
+      "723": 0.044,
+      "1967": 0
+    },
+    "stoploss": {
+      "stoploss": -0.048
+    }
+  },
+  "ft_stratparam_v": 1,
+  "export_time": "2021-10-25 16:20:08.512326+00:00"
+}

@@ -1,19 +1,15 @@
-import numpy as np
-import pandas as pd
 from pandas import DataFrame
-from freqtrade.strategy.interface import IStrategy
+from freqtrade.strategy import (IntParameter, IStrategy, CategoricalParameter)
 import talib.abstract as ta
-import freqtrade.vendor.qtpylib.indicators as qtpylib
 
 class FrostAuraM4Strategy(IStrategy):
     """
     This is FrostAura's mark 4 stretagy with RSI and MACD.
     
     Last Optimization:
-        Profit %        : 31.60%
-        Optimized for   : Last 30 days, 4h
-        Avg             : 3,032.7 m
-        Obj             : -20,138.69916
+        Profit %        : 7.07%
+        Optimized for   : Last 45 days, 4h
+        Avg             : 5d 18h 30m
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -21,14 +17,20 @@ class FrostAuraM4Strategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.70914,
-        "1008": 0.16924,
-        "1820": 0.1171,
-        "3394": 0
+        "0": 0.578,
+        "1617": 0.167,
+        "2673": 0.105,
+        "6903": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.38589
+    stoploss = -0.307
+
+    # Trailing stop:
+    trailing_stop = False  # value loaded from strategy
+    trailing_stop_positive = None  # value loaded from strategy
+    trailing_stop_positive_offset = 0.0  # value loaded from strategy
+    trailing_only_offset_is_reached = False  # value loaded from strategy
 
     # Trailing stoploss
     trailing_stop = False
@@ -92,24 +94,32 @@ class FrostAuraM4Strategy(IStrategy):
 
         return dataframe
 
+    buy_rsi = IntParameter([20, 80], default=24, space='buy')
+    buy_rsi_direction = CategoricalParameter(['<', '>'], default='>', space='buy')
+    buy_macd_direction = CategoricalParameter(['<', '>'], default='<', space='buy')
+
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         minimum_coin_price = 0.0000015
         
         dataframe.loc[
             (
-                (dataframe['rsi'] < 25) &
-                (dataframe['macd'] > dataframe['macdsignal']) &
+                (dataframe['rsi'] < self.buy_rsi.value if self.buy_rsi_direction.value == '<' else dataframe['rsi'] > self.buy_rsi.value) &
+                (dataframe['macd'] > dataframe['macdsignal'] if self.buy_macd_direction.value == '<' else dataframe['macd'] < dataframe['macdsignal']) &
                 (dataframe["close"] > minimum_coin_price)
             ),
             'buy'] = 1
 
         return dataframe
 
+    sell_rsi = IntParameter([20, 80], default=57, space='sell')
+    sell_rsi_direction = CategoricalParameter(['<', '>'], default='<', space='sell')
+    sell_macd_direction = CategoricalParameter(['<', '>'], default='>', space='sell')
+
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                (dataframe['rsi'] > 65) &
-                (dataframe['macd'] > dataframe['macdsignal'])
+                (dataframe['rsi'] < self.sell_rsi.value if self.sell_rsi_direction.value == '<' else dataframe['rsi'] > self.sell_rsi.value) &
+                (dataframe['macd'] > dataframe['macdsignal'] if self.sell_macd_direction.value == '<' else dataframe['macd'] < dataframe['macdsignal'])
             ),
             'sell'] = 1
         

@@ -1,11 +1,6 @@
-# pragma pylint: disable=missing-docstring, invalid-name, pointless-string-statement
-# isort: skip_file
-import numpy as np  # noqa
-import pandas as pd  # noqa
 from pandas import DataFrame
-from freqtrade.strategy.interface import IStrategy
+from freqtrade.strategy import (IntParameter, IStrategy, CategoricalParameter)
 import talib.abstract as ta
-import freqtrade.vendor.qtpylib.indicators as qtpylib
 
 class FrostAuraM6Strategy(IStrategy):
     """
@@ -13,9 +8,9 @@ class FrostAuraM6Strategy(IStrategy):
     based on the ADX and MACD indicators. A momentum-based strategy.
     
     Last Optimization:
-        Profit %        : -14.25%
-        Optimized for   : Last 30 days, 1h
-        Avg             : 990.0 m
+        Profit %        : 2.78%
+        Optimized for   : Last 45 days, 1h
+        Avg             : 9h 1m
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -24,15 +19,20 @@ class FrostAuraM6Strategy(IStrategy):
     # Minimal ROI designed for the strategy.
     # This attribute will be overridden if the config file contains "minimal_roi".
     minimal_roi = {
-        "0": 0.28197,
-        "196": 0.16291,
-        "343": 0.04476,
-        "1586": 0
+        "0": 0.515,
+        "154": 0.122,
+        "751": 0.057,
+        "1380": 0
     }
 
-    # Optimal stoploss designed for the strategy.
-    # This attribute will be overridden if the config file contains "stoploss".
-    stoploss = -0.33028
+    # Stoploss:
+    stoploss = -0.029
+
+    # Trailing stop:
+    trailing_stop = False  # value loaded from strategy
+    trailing_stop_positive = None  # value loaded from strategy
+    trailing_stop_positive_offset = 0.0  # value loaded from strategy
+    trailing_only_offset_is_reached = False  # value loaded from strategy
 
     # Trailing stoploss
     trailing_stop = False
@@ -102,26 +102,32 @@ class FrostAuraM6Strategy(IStrategy):
 
         return dataframe
 
+    buy_macd = IntParameter([-20, 20], default=-17, space='buy')
+    buy_adx = IntParameter([0, 50], default=46, space='buy')
+
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         minimum_coin_price = 0.0000015
         
         dataframe.loc[
             (
-                (dataframe['macd'] > -14) &
+                (dataframe['macd'] > self.buy_macd.value) &
                 (dataframe['plus_di'] > dataframe['minus_di']) &
-                (dataframe['adx'] > 33) &
+                (dataframe['adx'] > self.buy_adx.value) &
                 (dataframe["close"] > minimum_coin_price)
             ),
             'buy'] = 1
 
         return dataframe
 
+    sell_macd = IntParameter([-20, 20], default=4, space='sell')
+    sell_adx = IntParameter([0, 50], default=9, space='sell')
+
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                (dataframe['macd'] < 0) &
+                (dataframe['macd'] < self.sell_macd.value) &
                 (dataframe['minus_di'] > dataframe['plus_di']) &
-                (dataframe['adx'] < 26)
+                (dataframe['adx'] < self.sell_adx.value)
             ),
             'sell'] = 1
         return dataframe

@@ -1,0 +1,31 @@
+{
+  "strategy_name": "FrostAuraM5Strategy",
+  "params": {
+    "trailing": {
+      "trailing_stop": false,
+      "trailing_stop_positive": null,
+      "trailing_stop_positive_offset": 0.0,
+      "trailing_only_offset_is_reached": false
+    },
+    "buy": {
+      "buy_adx": 50,
+      "buy_di_direction": ">"
+    },
+    "sell": {
+      "sell_adx": 45,
+      "sell_rsi": 29
+    },
+    "protection": {},
+    "roi": {
+      "0": 0.36,
+      "298": 0.18,
+      "731": 0.057,
+      "1050": 0
+    },
+    "stoploss": {
+      "stoploss": -0.271
+    }
+  },
+  "ft_stratparam_v": 1,
+  "export_time": "2021-10-25 20:57:41.218296+00:00"
+}

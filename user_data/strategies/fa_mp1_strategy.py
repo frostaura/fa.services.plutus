@@ -100,12 +100,13 @@ class FrostAuraMP1Strategy(IStrategy):
         return forecasts
 
     buy_n_predictions = IntParameter([1, 48], default=4, space='buy')
-    
+    buy_required_delta_percentage = IntParameter([1, 100], default=1, space='buy')
+    1 + 1
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         hours_to_predict_ahead = self.buy_n_predictions.value
         predictions = self.make_predictions(dataframe, n_predictions=hours_to_predict_ahead)
         mean_prediction = predictions['yhat'].mean()
-        trend_is_upwards = mean_prediction > dataframe['close']
+        trend_is_upwards = (mean_prediction * (1 + self.buy_required_delta_percentage.value / 100 )) > dataframe['close']
 
         dataframe.loc[
             (
@@ -116,12 +117,13 @@ class FrostAuraMP1Strategy(IStrategy):
         return dataframe
 
     sell_n_predictions = IntParameter([1, 48], default=4, space='sell')
+    sell_required_delta_percentage = IntParameter([1, 100], default=1, space='sell')
 
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         hours_to_predict_ahead = self.sell_n_predictions.value
         predictions = self.make_predictions(dataframe, n_predictions=hours_to_predict_ahead)
         mean_prediction = predictions['yhat'].mean()
-        trend_is_downwards = mean_prediction < dataframe['close']
+        trend_is_downwards = (mean_prediction * (1 - self.sell_required_delta_percentage.value / 100 )) < dataframe['close']
         
         dataframe.loc[
             (

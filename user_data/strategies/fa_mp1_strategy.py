@@ -7,9 +7,9 @@ class FrostAuraMP1Strategy(IStrategy):
     This is FrostAura's implementation of the Facebook Prophet library for time series forecasting.
     
     Last Optimization:
-        Profit %        : -.--%
+        Profit %        : 14.06%
         Optimized for   : Last 45 days, 1h
-        Avg             : -m
+        Avg             : 3d 3h 26m
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -17,14 +17,14 @@ class FrostAuraMP1Strategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.797,
-        "1905": 0.212,
-        "3884": 0.089,
-        "4825": 0
+        "0": 0.595,
+        "179": 0.186,
+        "553": 0.056,
+        "1883": 0
     }
 
     # Stoploss:
-    stoploss = -0.27
+    stoploss = -0.283
 
     # Trailing stop:
     trailing_stop = False  # value loaded from strategy
@@ -47,7 +47,7 @@ class FrostAuraMP1Strategy(IStrategy):
     ignore_roi_if_buy_signal = False
 
     # Number of candles the strategy requires before producing valid signals.
-    startup_candle_count: int = 30
+    startup_candle_count: int = 45
 
     # Optional order type mapping.
     order_types = {
@@ -84,9 +84,10 @@ class FrostAuraMP1Strategy(IStrategy):
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         # Train the Prophet model on each time tick.
-        df = dataframe[['time', 'close']] \
-                .rename(columns={'time': 'ds', 'close': 'y'})
-
+        df = dataframe[['date', 'close']] \
+                .rename(columns={'date': 'ds', 'close': 'y'})
+        
+        df['ds'] = df['ds'].dt.tz_localize(None)
         self.model = Prophet(interval_width=0.95, daily_seasonality=True)
         self.model.fit(df)
 
@@ -95,13 +96,13 @@ class FrostAuraMP1Strategy(IStrategy):
     def make_predictions(self, dataframe: DataFrame, n_predictions, frequency = 'H') -> DataFrame:
         # Add the predictions to the dataframe with column name 'yhat'.
         predictions = self.model.make_future_dataframe(periods=n_predictions, freq=frequency)
-        forecasts = self.model.predict(predictions)['ds', 'yhat']
+        forecasts = self.model.predict(predictions)[['ds', 'yhat']]
 
         return forecasts
 
-    buy_n_predictions = IntParameter([1, 48], default=4, space='buy')
-    buy_required_delta_percentage = IntParameter([1, 100], default=1, space='buy')
-    1 + 1
+    buy_n_predictions = IntParameter([1, 48], default=23, space='buy')
+    buy_required_delta_percentage = IntParameter([1, 100], default=39, space='buy')
+
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         hours_to_predict_ahead = self.buy_n_predictions.value
         predictions = self.make_predictions(dataframe, n_predictions=hours_to_predict_ahead)
@@ -116,8 +117,8 @@ class FrostAuraMP1Strategy(IStrategy):
 
         return dataframe
 
-    sell_n_predictions = IntParameter([1, 48], default=4, space='sell')
-    sell_required_delta_percentage = IntParameter([1, 100], default=1, space='sell')
+    sell_n_predictions = IntParameter([1, 48], default=40, space='sell')
+    sell_required_delta_percentage = IntParameter([1, 100], default=54, space='sell')
 
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         hours_to_predict_ahead = self.sell_n_predictions.value

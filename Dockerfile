@@ -1,5 +1,5 @@
 # Use the base image from Freqtrade.
-FROM freqtradeorg/freqtrade:2021.9
+FROM frostaura/freqtrade:latest
 
 # Copy over required files.
 COPY ./user_data /freqtrade/user_data

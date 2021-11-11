@@ -10,13 +10,13 @@ FrostAura Plutus is a fully automated trading system.
 The project supports being run as a container and is in fact indended to. In order to run this service locally, simply run `docker-compose up` in the directory where the `docker-compose.yml` file resides. The service will now run.
 ### Docker Hub
 Automated builds are set up for Docker Hub. To use this service without the source code running, use
-- `docker pull frostauraconsolidated/plutus` or 
-- Visit https://hub.docker.com/repository/docker/frostauraconsolidated/plutus.
+- `docker pull frostaura/plutus` or 
+- Visit https://hub.docker.com/repository/docker/frostaura/plutus.
 #### Docker Compose Example
     version: "3"
         services:
             freqtrade:
-                image: "frostauraconsolidated/plutus"
+                image: "frostaura/plutus"
                 volumes:
                     - "./user_data:/freqtrade/user_data"
                 command: >

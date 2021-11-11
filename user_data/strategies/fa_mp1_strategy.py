@@ -7,9 +7,9 @@ class FrostAuraMP1Strategy(IStrategy):
     This is FrostAura's implementation of the Facebook Prophet library for time series forecasting.
     
     Last Optimization:
-        Profit %        : 14.06%
+        Profit %        : 15.04%
         Optimized for   : Last 45 days, 1h
-        Avg             : 3d 3h 26m
+        Avg             : 2d 2h 0m
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -17,14 +17,14 @@ class FrostAuraMP1Strategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.595,
-        "179": 0.186,
-        "553": 0.056,
-        "1883": 0
+        "0": 0.267,
+        "461": 0.143,
+        "773": 0.057,
+        "1802": 0
     }
 
     # Stoploss:
-    stoploss = -0.283
+    stoploss = -0.179
 
     # Trailing stop:
     trailing_stop = False  # value loaded from strategy
@@ -100,8 +100,8 @@ class FrostAuraMP1Strategy(IStrategy):
 
         return forecasts
 
-    buy_n_predictions = IntParameter([1, 48], default=23, space='buy')
-    buy_required_delta_percentage = IntParameter([1, 100], default=39, space='buy')
+    buy_n_predictions = IntParameter([1, 48], default=31, space='buy')
+    buy_required_delta_percentage = IntParameter([1, 100], default=88, space='buy')
 
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         hours_to_predict_ahead = self.buy_n_predictions.value
@@ -117,7 +117,7 @@ class FrostAuraMP1Strategy(IStrategy):
 
         return dataframe
 
-    sell_n_predictions = IntParameter([1, 48], default=40, space='sell')
+    sell_n_predictions = IntParameter([1, 48], default=16, space='sell')
     sell_required_delta_percentage = IntParameter([1, 100], default=54, space='sell')
 
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:

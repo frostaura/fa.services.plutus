@@ -1,0 +1,31 @@
+{
+  "strategy_name": "FrostAuraMP1Strategy",
+  "params": {
+    "trailing": {
+      "trailing_stop": false,
+      "trailing_stop_positive": null,
+      "trailing_stop_positive_offset": 0.0,
+      "trailing_only_offset_is_reached": false
+    },
+    "buy": {
+      "buy_n_predictions": 20,
+      "buy_required_delta_percentage": 58
+    },
+    "sell": {
+      "sell_n_predictions": 40,
+      "sell_required_delta_percentage": 47
+    },
+    "protection": {},
+    "roi": {
+      "0": 0.353,
+      "471": 0.131,
+      "1020": 0.057,
+      "2154": 0
+    },
+    "stoploss": {
+      "stoploss": -0.164
+    }
+  },
+  "ft_stratparam_v": 1,
+  "export_time": "2021-11-12 06:25:24.056536+00:00"
+}

@@ -6,6 +6,7 @@ FrostAura Plutus is a fully automated trading system.
 | --- | --- | --- |
 | Automatic Optimization Pipeline | ![TravisCI](https://travis-ci.org/faGH/fa.services.plutus.svg?branch=main) | TravisCI
 ## Docker Support
+![Docker Badge](https://dockeri.co/image/frostauraconsolidated/plutus)
 ### Local
 The project supports being run as a container and is in fact indended to. In order to run this service locally, simply run `docker-compose up` in the directory where the `docker-compose.yml` file resides. The service will now run.
 ### Docker Hub

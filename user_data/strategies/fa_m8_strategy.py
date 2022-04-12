@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from pandas import DataFrame
 from freqtrade.strategy.interface import IStrategy
+from freqtrade.strategy import (IntParameter, IStrategy, CategoricalParameter)
 import talib.abstract as ta
 import freqtrade.vendor.qtpylib.indicators as qtpylib
 
@@ -11,9 +12,9 @@ class FrostAuraM8Strategy(IStrategy):
     based on the RSI & overall performance of the asset from it's previous candlesticks.
     
     Last Optimization:
-        Profit %        : 84.69%
-        Optimized for   : Last 30 days, 4h
-        Avg             : 160.0 m
+        Profit %        : 12.20%
+        Optimized for   : Last 45 days, 4h
+        Avg             : 4d 20h 48m
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -21,14 +22,14 @@ class FrostAuraM8Strategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.7218,
-        "758": 0.21619,
-        "1864": 0.07295,
-        "6108": 0
+        "0": 0.684,
+        "864": 0.267,
+        "3186": 0.057,
+        "6992": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.02059
+    stoploss = -0.277
 
     # Trailing stoploss
     trailing_stop = False
@@ -86,31 +87,34 @@ class FrostAuraM8Strategy(IStrategy):
 
         return dataframe
 
+    buy_rsi = IntParameter([20, 80], default=71, space='buy')
+    buy_rsi_direction = CategoricalParameter(['<', '>'], default='<', space='buy')
+
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        var_rsi = 88
         minimum_coin_price = 0.0000015
 
         dataframe.loc[
             (
-                (dataframe['rsi'] > var_rsi) &
+                (dataframe['rsi'] < self.buy_rsi.value if self.buy_rsi_direction.value == '<' else dataframe['rsi'] > self.buy_rsi.value) &
                 (dataframe['close'] > minimum_coin_price)
             ),
             'buy'] = 1
 
         return dataframe
 
+    sell_rsi = IntParameter([20, 80], default=43, space='sell')
+    sell_rsi_direction = CategoricalParameter(['<', '>'], default='>', space='sell')
+    sell_percentage = IntParameter([1, 50], default=12, space='sell')
+
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        var_sell_rsi = 37
-        var_sell_percentage = 23
-        
         previous_close = dataframe['close'].shift(1)
         current_close = dataframe['close']
         percentage_price_delta = ((previous_close - current_close) / previous_close) * -100
         
         dataframe.loc[
             (
-                (dataframe['rsi'] < var_sell_rsi) |
-                (percentage_price_delta > var_sell_percentage)
+                (dataframe['rsi'] < self.sell_rsi.value if self.sell_rsi_direction.value == '<' else dataframe['rsi'] > self.sell_rsi.value) |
+                (percentage_price_delta > self.sell_percentage.value)
             ),
             'sell'] = 1
         

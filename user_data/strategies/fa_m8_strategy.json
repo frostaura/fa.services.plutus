@@ -1,5 +1,5 @@
 {
-  "strategy_name": "FrostAuraM4Strategy",
+  "strategy_name": "FrostAuraM8Strategy",
   "params": {
     "trailing": {
       "trailing_stop": false,
@@ -8,26 +8,25 @@
       "trailing_only_offset_is_reached": false
     },
     "buy": {
-      "buy_macd_direction": "<",
-      "buy_rsi": 46,
+      "buy_rsi": 71,
       "buy_rsi_direction": "<"
     },
     "sell": {
-      "sell_macd_direction": ">",
-      "sell_rsi": 22,
-      "sell_rsi_direction": "<"
+      "sell_percentage": 12,
+      "sell_rsi": 43,
+      "sell_rsi_direction": ">"
     },
     "protection": {},
     "roi": {
-      "0": 0.478,
-      "1678": 0.23600000000000002,
-      "2723": 0.066,
-      "3521": 0
+      "0": 0.6839999999999999,
+      "864": 0.267,
+      "3186": 0.057,
+      "6992": 0
     },
     "stoploss": {
-      "stoploss": -0.25
+      "stoploss": -0.277
     }
   },
   "ft_stratparam_v": 1,
-  "export_time": "2022-03-22 13:50:07.214525+00:00"
+  "export_time": "2022-04-12 11:26:29.377297+00:00"
 }

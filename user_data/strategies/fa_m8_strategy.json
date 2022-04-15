@@ -8,25 +8,25 @@
       "trailing_only_offset_is_reached": false
     },
     "buy": {
-      "buy_rsi": 71,
-      "buy_rsi_direction": "<"
+      "buy_rsi": 35,
+      "buy_rsi_direction": ">"
     },
     "sell": {
-      "sell_percentage": 12,
-      "sell_rsi": 43,
+      "sell_percentage": 16,
+      "sell_rsi": 41,
       "sell_rsi_direction": ">"
     },
     "protection": {},
     "roi": {
-      "0": 0.6839999999999999,
-      "864": 0.267,
-      "3186": 0.057,
-      "6992": 0
+      "0": 0.40800000000000003,
+      "1720": 0.15000000000000002,
+      "2691": 0.08,
+      "6079": 0
     },
     "stoploss": {
-      "stoploss": -0.277
+      "stoploss": -0.187
     }
   },
   "ft_stratparam_v": 1,
-  "export_time": "2022-04-12 11:26:29.377297+00:00"
+  "export_time": "2022-04-14 07:23:46.764393+00:00"
 }

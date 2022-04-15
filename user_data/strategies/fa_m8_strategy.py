@@ -12,9 +12,9 @@ class FrostAuraM8Strategy(IStrategy):
     based on the RSI & overall performance of the asset from it's previous candlesticks.
     
     Last Optimization:
-        Profit %        : 12.20%
+        Profit %        : 11.09%
         Optimized for   : Last 45 days, 4h
-        Avg             : 4d 20h 48m
+        Avg             : 5d 3h 0m
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -22,14 +22,14 @@ class FrostAuraM8Strategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.684,
-        "864": 0.267,
-        "3186": 0.057,
-        "6992": 0
+        "0": 0.35,
+        "787": 0.249,
+        "1500": 0.086,
+        "6522": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.277
+    stoploss = -0.239
 
     # Trailing stoploss
     trailing_stop = False
@@ -87,7 +87,7 @@ class FrostAuraM8Strategy(IStrategy):
 
         return dataframe
 
-    buy_rsi = IntParameter([20, 80], default=71, space='buy')
+    buy_rsi = IntParameter([20, 80], default=38, space='buy')
     buy_rsi_direction = CategoricalParameter(['<', '>'], default='<', space='buy')
 
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
@@ -102,9 +102,9 @@ class FrostAuraM8Strategy(IStrategy):
 
         return dataframe
 
-    sell_rsi = IntParameter([20, 80], default=43, space='sell')
+    sell_rsi = IntParameter([20, 80], default=75, space='sell')
     sell_rsi_direction = CategoricalParameter(['<', '>'], default='>', space='sell')
-    sell_percentage = IntParameter([1, 50], default=12, space='sell')
+    sell_percentage = IntParameter([1, 50], default=36, space='sell')
 
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         previous_close = dataframe['close'].shift(1)

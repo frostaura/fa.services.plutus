@@ -1,4 +1,5 @@
 from pandas import DataFrame
+import pandas as pd
 from freqtrade.strategy.interface import IStrategy
 from freqtrade.strategy import (IntParameter, IStrategy, CategoricalParameter)
 import urllib.request
@@ -9,9 +10,9 @@ class FrostAuraBifrostStrategy(IStrategy):
     This is FrostAura's AI strategy powered by the FrostAura Bifrost API.
 
     Last Optimization:
-        Profit %        : --.--%
+        Profit %        : 29.97%
         Optimized for   : Last 45 days, 1h
-        Avg             : -d -h -m
+        Avg             : 2d 16h 37m
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -19,14 +20,14 @@ class FrostAuraBifrostStrategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.35,
-        "787": 0.249,
-        "1500": 0.086,
-        "6522": 0
+        "0": 0.561,
+        "427": 0.182,
+        "1040": 0.03,
+        "2358": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.239
+    stoploss = -0.329
 
     # Trailing stoploss
     trailing_stop = False
@@ -75,37 +76,32 @@ class FrostAuraBifrostStrategy(IStrategy):
         }
     }
 
-    def __get_bifrost_prediction__(self, dataframe: DataFrame, metadata: dict) -> float:
-        latest_time_entry: str = str(dataframe.date.values[-1])
+    def __get_bifrost_bulk_prediction__(self, dataframe: DataFrame, metadata: dict) -> float:
         pair_name: str = metadata['pair'].replace('/', '')
-        bifrost_request_url: str = f'https://bifrost.frostaura.net/api/v1/binance/pair/{pair_name}/period/{self.timeframe}/next?cutoff_time_utc={latest_time_entry}'
+        bifrost_request_url: str = f'http://bifrost.frostaura.net/api/v1/binance/pair/{pair_name}/period/{self.timeframe}/bulk/45'
 
         print(f'Bifrost Request Url: {bifrost_request_url}')
 
         response_string = urllib.request.urlopen(bifrost_request_url).read()
         response_parsed = json.loads(response_string)
-        latest_value = dataframe.close.values[-1]
-        predicted_value = response_parsed['predicted_close']
-        delta_percentage = latest_value / (predicted_value - latest_value)
-        predictions = {
-            'prediction': predicted_value,
-            'price_predicted_to_increase': predicted_value > latest_value,
-            'delta_percentage': delta_percentage,
-            'latest_value': latest_value
-        }
-        
-        print(f'Bifrost Prediction: {predictions}')
+        predictions = pd.DataFrame(response_parsed['data'])
+
+        print(f'Bifrost Prediction Count: {len(predictions)} vs {len(dataframe)} true count.')
+
         return predictions
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        return dataframe
+        predictions = self.__get_bifrost_bulk_prediction__(dataframe, metadata)
+        new_df = dataframe.tail(len(dataframe))
+        new_df['delta_percentage'] = pd.to_numeric(predictions.delta_percentages)
+
+        return new_df
 
     buy_prediction_delta_direction = CategoricalParameter(['<', '>'], default='>', space='buy')
-    buy_prediction_delta = IntParameter([1, 25], default=5, space='buy')
+    buy_prediction_delta = IntParameter([-10000000, 10000000], default=-423044, space='buy')
 
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        bifrost_prediction = self.__get_bifrost_prediction__(dataframe=dataframe, metadata=metadata)
-        prediction_delta = bifrost_prediction['delta_percentage']
+        prediction_delta = dataframe['delta_percentage']
 
         dataframe.loc[
             (
@@ -115,12 +111,11 @@ class FrostAuraBifrostStrategy(IStrategy):
 
         return dataframe
 
-    sell_prediction_delta_direction = CategoricalParameter(['<', '>'], default='>', space='sell')
-    sell_prediction_delta = IntParameter([1, 25], default=5, space='sell')
+    sell_prediction_delta_direction = CategoricalParameter(['<', '>'], default='<', space='sell')
+    sell_prediction_delta = IntParameter([-10000000, 10000000], default=-4136789, space='sell')
 
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        bifrost_prediction = self.__get_bifrost_prediction__(dataframe=dataframe, metadata=metadata)
-        prediction_delta = bifrost_prediction['delta_percentage']
+        prediction_delta = dataframe['delta_percentage']
 
         dataframe.loc[
             (

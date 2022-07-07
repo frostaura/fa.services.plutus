@@ -5,6 +5,8 @@ services:
       context: ./
       dockerfile: ./Dockerfile
     restart: unless-stopped
+    depends_on:
+      - bifrost
     container_name: freqtrade
     volumes:
       - "./user_data:/freqtrade/user_data"
@@ -14,3 +16,8 @@ services:
       --db-url sqlite:////freqtrade/user_data/tradesv3.sqlite
       --config /freqtrade/user_data/config.json
       --strategy FrostAuraM1Strategy
+  bifrost:
+    image: "frostaura/bifrost:latest"
+    volumes:
+      - "./bifrost/data:/app/pair_data"
+    restart: unless-stopped

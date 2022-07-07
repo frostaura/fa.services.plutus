@@ -78,7 +78,8 @@ class FrostAuraBifrostStrategy(IStrategy):
 
     def __get_bifrost_bulk_prediction__(self, dataframe: DataFrame, metadata: dict) -> float:
         pair_name: str = metadata['pair'].replace('/', '')
-        bifrost_request_url: str = f'http://bifrost.frostaura.net/api/v1/binance/pair/{pair_name}/period/{self.timeframe}/bulk/45'
+        # This API is set up via Docker Compose. View the docker-compose.yml file for more.
+        bifrost_request_url: str = f'http://bifrost/api/v1/binance/pair/{pair_name}/period/{self.timeframe}/bulk/45'
 
         print(f'Bifrost Request Url: {bifrost_request_url}')
 

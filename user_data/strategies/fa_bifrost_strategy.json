@@ -1,0 +1,31 @@
+{
+  "strategy_name": "FrostAuraBifrostStrategy",
+  "params": {
+    "trailing": {
+      "trailing_stop": false,
+      "trailing_stop_positive": null,
+      "trailing_stop_positive_offset": 0.0,
+      "trailing_only_offset_is_reached": false
+    },
+    "buy": {
+      "buy_prediction_delta": -423044,
+      "buy_prediction_delta_direction": ">"
+    },
+    "sell": {
+      "sell_prediction_delta": -4136789,
+      "sell_prediction_delta_direction": "<"
+    },
+    "protection": {},
+    "roi": {
+      "0": 0.5609999999999999,
+      "427": 0.182,
+      "1040": 0.03,
+      "2358": 0
+    },
+    "stoploss": {
+      "stoploss": -0.329
+    }
+  },
+  "ft_stratparam_v": 1,
+  "export_time": "2022-07-03 06:53:39.340341+00:00"
+}

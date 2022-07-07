@@ -1,0 +1,31 @@
+{
+  "strategy_name": "FrostAuraRandomStrategy",
+  "params": {
+    "trailing": {
+      "trailing_stop": false,
+      "trailing_stop_positive": null,
+      "trailing_stop_positive_offset": 0.0,
+      "trailing_only_offset_is_reached": false
+    },
+    "buy": {
+      "buy_prediction_delta_direction": ">",
+      "buy_probability": 76
+    },
+    "sell": {
+      "sell_prediction_delta_direction": "<",
+      "sell_probability": 0
+    },
+    "protection": {},
+    "roi": {
+      "0": 0.347,
+      "450": 0.106,
+      "1169": 0.032,
+      "1624": 0
+    },
+    "stoploss": {
+      "stoploss": -0.231
+    }
+  },
+  "ft_stratparam_v": 1,
+  "export_time": "2022-07-07 21:07:33.556113+00:00"
+}

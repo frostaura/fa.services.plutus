@@ -43,7 +43,6 @@
         "pair_whitelist": [
             "SAND/BTC",
             "MANA/BTC",
-            "BQX/BTC",
             "ALGO/BTC",
             "IRIS/BTC",
             "THETA/BTC",
@@ -53,7 +52,6 @@
             "GLM/BTC",
             "BNB/BTC",
             "BAT/BTC",
-            "BOT/BTC",
             "OMG/BTC",
             "FIL/BTC",
             "ICX/BTC",

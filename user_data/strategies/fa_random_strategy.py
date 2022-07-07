@@ -1,20 +1,17 @@
-import numpy as np
-import pandas as pd
 from pandas import DataFrame
 from freqtrade.strategy.interface import IStrategy
 from freqtrade.strategy import (IntParameter, IStrategy, CategoricalParameter)
-import talib.abstract as ta
-import freqtrade.vendor.qtpylib.indicators as qtpylib
+from random import random
+import numpy as np
 
-class FrostAuraM8Strategy(IStrategy):
+class FrostAuraRandomStrategy(IStrategy):
     """
-    This is FrostAura's mark 8 strategy which aims to make purchase decisions
-    based on the RSI & overall performance of the asset from it's previous candlesticks.
-    
+    This is FrostAura's random strategy powered by nature.
+
     Last Optimization:
-        Profit %        : 11.09%
-        Optimized for   : Last 45 days, 4h
-        Avg             : 5d 3h 0m
+        Profit %        : 10-30%
+        Optimized for   : Last 45 days, 1h
+        Avg             : 2d - 5d
     """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
@@ -22,20 +19,20 @@ class FrostAuraM8Strategy(IStrategy):
 
     # Minimal ROI designed for the strategy.
     minimal_roi = {
-        "0": 0.35,
-        "787": 0.249,
-        "1500": 0.086,
-        "6522": 0
+        "0": 0.347,
+        "450": 0.106,
+        "1169": 0.032,
+        "1624": 0
     }
 
     # Optimal stoploss designed for the strategy.
-    stoploss = -0.239
+    stoploss = -0.231
 
     # Trailing stoploss
     trailing_stop = False
 
     # Optimal ticker interval for the strategy.
-    timeframe = '4h'
+    timeframe = '1h'
 
     # Run "populate_indicators()" only for new candle.
     process_only_new_candles = False
@@ -78,44 +75,35 @@ class FrostAuraM8Strategy(IStrategy):
         }
     }
 
-    def informative_pairs(self):
-        return []
-
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        # RSI
-        dataframe['rsi'] = ta.RSI(dataframe)
+        dataframe['random_number'] = np.random.randint(0, 100, dataframe.shape[0])
 
         return dataframe
 
-    buy_rsi = IntParameter([20, 80], default=38, space='buy')
-    buy_rsi_direction = CategoricalParameter(['<', '>'], default='<', space='buy')
+    buy_prediction_delta_direction = CategoricalParameter(['<', '>'], default='>', space='buy')
+    buy_probability = IntParameter([0, 100], default=76, space='buy')
 
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        minimum_coin_price = 0.0000015
+        random_number = dataframe['random_number']
 
         dataframe.loc[
             (
-                (dataframe['rsi'] < self.buy_rsi.value if self.buy_rsi_direction.value == '<' else dataframe['rsi'] > self.buy_rsi.value) &
-                (dataframe['close'] > minimum_coin_price)
+                (random_number < self.buy_probability.value if self.buy_prediction_delta_direction.value == '<' else random_number > self.buy_probability.value)
             ),
             'buy'] = 1
 
         return dataframe
 
-    sell_rsi = IntParameter([20, 80], default=75, space='sell')
-    sell_rsi_direction = CategoricalParameter(['<', '>'], default='>', space='sell')
-    sell_percentage = IntParameter([1, 50], default=36, space='sell')
+    sell_prediction_delta_direction = CategoricalParameter(['<', '>'], default='<', space='sell')
+    sell_probability = IntParameter([0, 100], default=0, space='sell')
 
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        previous_close = dataframe['close'].shift(1)
-        current_close = dataframe['close']
-        percentage_price_delta = ((previous_close - current_close) / previous_close) * -100
-        
+        random_number = dataframe['random_number']
+
         dataframe.loc[
             (
-                (dataframe['rsi'] < self.sell_rsi.value if self.sell_rsi_direction.value == '<' else dataframe['rsi'] > self.sell_rsi.value) |
-                (percentage_price_delta > self.sell_percentage.value)
+                (random_number < self.sell_probability.value if self.sell_prediction_delta_direction.value == '<' else random_number > self.sell_probability.value)
             ),
             'sell'] = 1
-        
+
         return dataframe

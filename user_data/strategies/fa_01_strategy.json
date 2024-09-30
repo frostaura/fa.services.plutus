@@ -1,0 +1,39 @@
+{
+  "strategy_name": "FrostAura01Strategy",
+  "params": {
+    "trailing": {
+      "trailing_stop": false,
+      "trailing_stop_positive": null,
+      "trailing_stop_positive_offset": 0.0,
+      "trailing_only_offset_is_reached": false
+    },
+    "max_open_trades": {
+      "max_open_trades": 15
+    },
+    "buy": {
+      "bb_multiplier": 0.992,
+      "bb_stds": 1.307,
+      "bb_window": 34,
+      "ema100_period": 155,
+      "ema_rsi_period": 4,
+      "rsi_period": 12,
+      "volume_multiplier": 35.928,
+      "volume_window": 33
+    },
+    "sell": {
+      "sell_multiplier": 1.72
+    },
+    "protection": {},
+    "roi": {
+      "0": 0.21200000000000002,
+      "106": 0.078,
+      "162": 0.044,
+      "499": 0
+    },
+    "stoploss": {
+      "stoploss": -0.148
+    }
+  },
+  "ft_stratparam_v": 1,
+  "export_time": "2024-09-30 14:24:12.757889+00:00"
+}

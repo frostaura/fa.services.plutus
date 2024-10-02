@@ -102,8 +102,8 @@
     ],
     "telegram": {
         "enabled": true,
-        "token": "5535601062:AAHQRQ2EDXOrioMsPd32ouaDFZCXqjzkeTU",
-        "chat_id": "1551490751"
+        "token": "...",
+        "chat_id": "..."
     },
     "bot_name": "FrostAura Plutus",
     "initial_state": "running",

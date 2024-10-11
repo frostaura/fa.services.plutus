@@ -1,13 +1,11 @@
 version: '3'
 services:
   freqtrade:
-    build:
-      context: ./
-      dockerfile: ./Dockerfile
+    image: frostaura/plutus
     restart: unless-stopped
     container_name: freqtrade
     volumes:
-      - "./user_data:/freqtrade/user_data"
+      - "/share/Container/container-volume-data/Configuration/plutus/user_data:/freqtrade/user_data"
     command: >
       trade
       --logfile /freqtrade/user_data/logs/freqtrade.log

@@ -10,3 +10,4 @@
 /user_data/tradesv3.sqlite
 /user_data/hyperopt.lock
 /.vs
+.DS_Store

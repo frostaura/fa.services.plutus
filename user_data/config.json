@@ -1,11 +1,11 @@
 {
-    "max_open_trades": 15,
+    "max_open_trades": 10,
     "stake_currency": "BTC",
-    "stake_amount": 0.002,
+    "stake_amount": 0.00092,
     "tradable_balance_ratio": 0.99,
     "fiat_display_currency": "ZAR",
     "dry_run": true,
-    "dry_run_wallet": 0.04,
+    "dry_run_wallet": 0.0092,
     "cancel_open_orders_on_exit": false,
     "unfilledtimeout": {
         "buy": 10,
@@ -38,15 +38,16 @@
             "enableRateLimit": true
         },
         "ccxt_async_config": {
-            "enableRateLimit": false
+            "enableRateLimit": true,
+            "rateLimit": 200
         },
         "pair_whitelist": [
             "ETH/BTC",  
             "BNB/BTC",  
             "XRP/BTC",  
             "ADA/BTC",  
-            "SOL/BTC",  
-            "DOGE/BTC",  
+            "SOL/BTC", 
+            "DOGE/BTC", 
             "MATIC/BTC",  
             "DOT/BTC",  
             "LTC/BTC",  
@@ -57,8 +58,8 @@
             "XMR/BTC",  
             "NEAR/BTC",  
             "ALGO/BTC",  
-            "FIL/BTC",  
-            "XLM/BTC",  
+            "FIL/BTC",
+            "XLM/BTC", 
             "ICP/BTC",  
             "APT/BTC",  
             "EGLD/BTC",  
@@ -71,7 +72,7 @@
             "VET/BTC",  
             "HBAR/BTC",  
             "GALA/BTC",  
-            "FLOW/BTC",  
+            "FLOW/BTC",
             "EOS/BTC",  
             "XTZ/BTC",  
             "KAVA/BTC",  

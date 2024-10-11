@@ -23,26 +23,31 @@ class FrostAura01Strategy(IStrategy):
     This is FrostAura's GPT 01 strategy. A reasonably safe trading strategy combining EMA crossovers and RSI. 
 
     Last Optimization:
-        Profit %        : 10.93%
-        Optimized for   : Last 30 days, 15m
-        Avg             : 19h
+        Profit %        : 17.21%
+        Optimized for   : Last 45 days, 30m
+        Avg             : 1d 8h 14m
+        Max Draw Down   : 3.16%
+        Win Rate        : 68.2%
+        Avg Profit      : 1.10%
     """  
-    INTERFACE_VERSION: int = 3  
+    INTERFACE_VERSION: int = 3
     minimal_roi = {  
         "0": 0.01  
     }  
     stoploss = -0.05  
-    timeframe = '15m'  
+    timeframe = '30m'  
 
     # Hyperopt parameters  
-    rsi_period = IntParameter(2, 30, default=5, space='buy')  
-    ema_rsi_period = IntParameter(2, 30, default=5, space='buy')  
-    ema100_period = IntParameter(20, 200, default=50, space='buy')  
-    bb_window = IntParameter(10, 50, default=20, space='buy')  
+    rsi_period = IntParameter(2, 14, default=6, space='buy')
+    entry_rsi = IntParameter(2, 14, default=6, space='buy')  
+    entry_rsi_period = IntParameter(2, 14, default=6, space='buy')  
+    ema_rsi_period = IntParameter(2, 14, default=6, space='buy')  
+    ema100_period = IntParameter(20, 100, default=50, space='buy')  
+    bb_window = IntParameter(10, 30, default=20, space='buy')  
     bb_stds = DecimalParameter(1.0, 3.0, default=2.0, space='buy')  
-    bb_multiplier = DecimalParameter(0.9, 1.0, default=0.985, space='buy')  
-    volume_window = IntParameter(5, 50, default=30, space='buy')  
-    volume_multiplier = DecimalParameter(1.0, 50.0, default=20.0, space='buy')  
+    bb_multiplier = DecimalParameter(0.8, 1.0, default=0.985, space='buy')  
+    volume_window = IntParameter(5, 30, default=15, space='buy')  
+    volume_multiplier = DecimalParameter(1.0, 20.0, default=10.0, space='buy')
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:  
         dataframe['rsi'] = ta.RSI(dataframe, timeperiod=self.rsi_period.value)  
@@ -64,7 +69,8 @@ class FrostAura01Strategy(IStrategy):
 
     def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:  
         dataframe.loc[  
-            (  
+            (
+                (dataframe['rsi'] < self.entry_rsi.value) &
                 (dataframe['close'] < dataframe['ema100']) &  
                 (dataframe['close'] < self.bb_multiplier.value * dataframe['bb_lowerband']) &  
                 (  

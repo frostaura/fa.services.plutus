@@ -23,12 +23,12 @@ class FrostAura01Strategy(IStrategy):
     This is FrostAura's GPT 01 strategy. A reasonably safe trading strategy combining EMA crossovers and RSI. 
 
     Last Optimization:
-        Profit %        : 13.44%
+        Profit %        : 11.19%
         Optimized for   : Last 45 days, 30m
-        Avg             : 2d 3h 48m
-        Max Draw Down   : 2.55%
-        Win Rate        : 63.4%
-        Avg Profit      : 1.44%
+        Avg             : 1d 15h 26m
+        Max Draw Down   : 4.28%
+        Win Rate        : 62.4%
+        Avg Profit      : 1.03%
     """  
     INTERFACE_VERSION: int = 3
     minimal_roi = {  
@@ -51,13 +51,13 @@ class FrostAura01Strategy(IStrategy):
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:  
         dataframe['rsi'] = ta.RSI(dataframe, timeperiod=self.rsi_period.value)  
-        rsiframe = DataFrame(dataframe['rsi']).rename(columns={'rsi': 'close'})  
+        rsiframe = DataFrame(dataframe['rsi']).rename(columns={'rsi': 'close'})
         dataframe['emarsi'] = ta.EMA(rsiframe, timeperiod=self.ema_rsi_period.value)  
-        macd = ta.MACD(dataframe)  
-        dataframe['macd'] = macd['macd']  
-        dataframe['adx'] = ta.ADX(dataframe)  
-        bollinger = qtpylib.bollinger_bands(  
-            qtpylib.typical_price(dataframe),  
+        macd = ta.MACD(dataframe)
+        dataframe['macd'] = macd['macd']
+        dataframe['adx'] = ta.ADX(dataframe)
+        bollinger = qtpylib.bollinger_bands(
+            qtpylib.typical_price(dataframe),
             window=self.bb_window.value,  
             stds=self.bb_stds.value  
         )  

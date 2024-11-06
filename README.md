@@ -38,7 +38,7 @@ This allows for testing a given strategy against downloaded market data. See the
 ##### Initiate HyperOpt for a Given Strategy (ML Optimization)
  This allows us to run an optimization of our own design in order to determine the optimal configuration of a strategy, given the downloaded market data. NOTE: Not specifying a time range means that optimizations will run on all downloaded market data.
 
-    docker-compose run --rm freqtrade hyperopt --config user_data/config.json -e 250 --strategy FrostAuraM1Strategy --hyperopt FrostAuraM1HyperOpt --hyperopt-loss OnlyProfitHyperOptLoss -i 1h
+    docker-compose run --rm freqtrade hyperopt --config user_data/config.json -e 2000 --strategy FrostAura01Strategy --hyperopt-loss OnlyProfitHyperOptLoss -i 30m
 
 ## How To
 ### Getting Started

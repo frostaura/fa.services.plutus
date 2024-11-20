@@ -23,12 +23,12 @@ class FrostAura01Strategy(IStrategy):
     This is FrostAura's GPT 01 strategy. A reasonably safe trading strategy combining EMA crossovers and RSI. 
 
     Last Optimization:
-        Profit %        : 10.52%
+        Profit %        : 6.87%
         Optimized for   : Last 45 days, 30m
         Avg             : 1d 10h 20m
         Max Draw Down   : 1.55%
-        Win Rate        : 65.8%
-        Avg Profit      : 1.38%
+        Win Rate        : 75.8%
+        Avg Profit      : 2.08%
     """  
     INTERFACE_VERSION: int = 3
     minimal_roi = {  
